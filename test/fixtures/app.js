@@ -1,9 +1,7 @@
-/*global before, after */
 'use strict';
 var flatiron = require('flatiron')
   , app = flatiron.app
   , path = require('path')
-  , _ = require('lodash')
   , Backbone = require('backbone')
   , routerPlugin = require('../../lib/serverRouter')
 

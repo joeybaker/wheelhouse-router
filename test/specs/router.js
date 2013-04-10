@@ -1,4 +1,4 @@
-/*globals describe, it */
+/*global describe, it */
 'use strict';
 var app = require('../fixtures/app')
   , request = require('request')
