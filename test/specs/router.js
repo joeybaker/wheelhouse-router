@@ -4,25 +4,49 @@ var app = require('../fixtures/app')
   , request = require('request')
 
 describe('router', function(){
-  var port = app.config.get('port') + 21
+  var port = app.config.get('port')
 
   it('attaches to a flatiron app', function(){
     app.router.routes.should.be.an('object')
   })
 
   describe('/', function(){
-    it('should render HTML', function(done){
+    it('renders the home controller', function(done){
       request.get('http://localhost:' + port, function(err, res, body){
         body.should.exist
-        body.indexOf('<!DOCTYPE html').should.equal(0)
+        body.indexOf('{"view":"home"}').should.not.equal(-1)
         done()
       })
     })
   })
 
+  describe('/streets', function(){
+    var url = 'http://localhost:' + port + '/streets'
+    describe('/', function(){
+      it('renders the street controller with the index action', function(done){
+        request.get(url, function(err, res, body){
+          body.should.exist
+          body.indexOf('"view":"streets/index"').should.not.equal(-1)
+          done()
+        })
+      })
+    })
+
+    describe('/:id', function(){
+      it('renders the street controller with the detail action', function(done){
+        request.get(url + '/1', function(err, res, body){
+          body.should.exist
+          body.indexOf('"view":"streets/detail"').should.not.equal(-1)
+          done()
+        })
+      })
+    })
+  })
+
+
   describe('/api', function(){
-    describe('/accesspoints', function(){
-      var url = 'http://localhost:' + port + '/api/accesspoints'
+    describe('/streets', function(){
+      var url = 'http://localhost:' + port + '/api/streets'
         , id
       it('POSTs JSON', function(done){
         request.post({
@@ -31,7 +55,7 @@ describe('router', function(){
         }, function(err, res, body){
           if (err) throw err
           res.statusCode.should.equal(200)
-          id = body._id
+          id = body.id
           body.should.exist
           done()
         })
@@ -40,9 +64,8 @@ describe('router', function(){
         request.put({
           url: url + '/' + encodeURIComponent(id)
           , json: {name: 'test-revised-again'}
-        }, function(err, res, body){
+        }, function(err, res){
           res.statusCode.should.equal(200)
-          body._rev.indexOf('2-').should.equal(0)
           done()
         })
       })

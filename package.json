@@ -29,8 +29,7 @@
   "dependencies": {
     "lodash": "~1.1",
     "backbone": "~1.0",
-    "underscore.string": "~2.3",
-    "wheelhouse-handlebars"
+    "underscore.string": "~2.3"
   },
   "devDependencies": {
     "flatiron": "~0.3",
@@ -42,9 +41,10 @@
     "mocha": "~1.8",
     "grunt-simple-mocha": "~0.3",
     "union": "~0.3",
-    "grunt-shell": "~0.2"
-  }
-  , "peerDependencies": {
+    "grunt-shell": "~0.2",
+    "request": "~2.16.6"
+  },
+  "peerDependencies": {
     "flatiron": "~0.3"
   }
 }

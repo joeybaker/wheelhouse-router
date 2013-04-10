@@ -6,7 +6,6 @@ A wheelhouse package that unifies the [backbone router](http://backbonejs.org/#R
 ## Usage
 
 ### Server
-Using this currently requires [wheelhouse-handlebars](https://github.com/joeybaker/wheelhouse-handlebars), and [flatiron](https://github.com/flatiron/flatiron)
 
 ```js
 // app.js
@@ -14,13 +13,10 @@ var flatiron = require('flatiron')
   , app = flatiron.app
   , path = require('path')
   , st = require('st') // needed for flation's static plugin
-  , handlebarsPlugin = require('wheelhouse-handlebars')
   , routerPlugin = require('wheelhouse-router')
 
 
 app.use(flatiron.plugins.http, {})
-
-// # config wheelhouse-handlebars
 
 // You probably want to use flatiron's static plugin to server your client-side JS/CSS
 app.use(flatiron.plugins.static, {
@@ -36,6 +32,7 @@ app.use(routerPlugin, {
   , collections: './collections/' // path to your collections
   , controllers: './controllers/' // path to your controllers
   , render: function(viewName, viewData, layoutOptions){} // defaults to app.render
+  , err404: 'err/404' // the path to your 404 template
 })
 
 app.start(8999)
@@ -69,6 +66,9 @@ A.init()
 
 ```
 
+### controller
+```js
+```
 
 ## tests
 

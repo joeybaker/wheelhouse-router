@@ -1,4 +1,5 @@
 {
   "(/)": {"get": "home#index"}
-  , "/second/*": {"get": "second#detail"}
+  , "streets(/)": {"get": "streets#index"}
+  , "streets/*": {"get": "streets#detail"}
 }

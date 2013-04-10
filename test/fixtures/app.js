@@ -4,8 +4,13 @@ var flatiron = require('flatiron')
   , app = flatiron.app
   , path = require('path')
   , _ = require('lodash')
+  , Backbone = require('backbone')
   , routerPlugin = require('../../lib/serverRouter')
-  , handlebarsPlugin = require('wheelhouse-handlebars')
+
+// override backbone.sync
+Backbone.sync = function(method, model, options) {
+  options.success()
+}
 
 require('chai').should()
 
@@ -15,7 +20,6 @@ process.env.NODE_ENV = 'test'
 app.config.file(path.join(__dirname, 'config.json'))
 
 app.use(flatiron.plugins.http, {})
-app.use(handlebarsPlugin, {templates: path.join(__dirname, 'templates')})
 app.use(routerPlugin, {
   base: __dirname // all paths are relative to this directory
   , mutualRoutes: './routes.json' // routes that are common client and server side
@@ -25,17 +29,16 @@ app.use(routerPlugin, {
 })
 
 module.exports = app
+if (!app.server) app.start(app.config.get('port'))
 
-_.once(function(){
-  before(function(done){
-    var port = app.config.get('port') + 21
-    if (!app.server) app.start(port, done)
-    else done()
-  })
+// before(function(done){
+//   console.log(app.config.get('port'))
+//   if (!app.server) app.start(app.config.get('port'), done)
+//   else done()
+// })
 
-  after(function(done){
-    app.server.close()
-    app = undefined
-    done()
-  })
-})
+// after(function(done){
+//   // app.server.close()
+//   app = undefined
+//   done()
+// })

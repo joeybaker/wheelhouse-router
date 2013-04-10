@@ -1,0 +1,11 @@
+{
+  "/api/streets": {
+      "get": "api/streets"
+      , "post": "api/streets"
+    }
+  , "/api/streets/*": {
+      "get": "api/streets"
+      , "put": "api/streets"
+      , "delete": "api/streets"
+    }
+}
