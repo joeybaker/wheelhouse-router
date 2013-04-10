@@ -1,0 +1,50 @@
+{
+  "name": "wheelhouse-router",
+  "version": "0.2.0",
+  "description": "A wheelhouse library to marry flatiron's Director with Backbone's router",
+  "main": "index.js",
+  "browserify": "lib/clientRouter",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:joeybaker/wheelhouse-router.git"
+  },
+  "keywords": [
+    "URL",
+    "http",
+    "client side",
+    "flatiron",
+    "backbone",
+    "router",
+    "route",
+    "controller",
+    "Director",
+    "connect",
+    "wheelhouse"
+  ],
+  "author": "Joey Baker",
+  "license": "BSD",
+  "dependencies": {
+    "lodash": "~1.1",
+    "backbone": "~1.0",
+    "underscore.string": "~2.3",
+    "wheelhouse-handlebars"
+  },
+  "devDependencies": {
+    "flatiron": "~0.3",
+    "grunt": "~0.4",
+    "grunt-bumpx": "~0.1",
+    "grunt-notify": "~0.1",
+    "grunt-contrib-jshint": "~0.1",
+    "chai": "~1.5",
+    "mocha": "~1.8",
+    "grunt-simple-mocha": "~0.3",
+    "union": "~0.3",
+    "grunt-shell": "~0.2"
+  }
+  , "peerDependencies": {
+    "flatiron": "~0.3"
+  }
+}

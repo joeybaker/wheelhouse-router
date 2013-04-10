@@ -1,0 +1,4 @@
+{
+  "(/)": {"get": "home#index"}
+  , "/second/*": {"get": "second#detail"}
+}

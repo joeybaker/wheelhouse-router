@@ -1,0 +1,15 @@
+{
+  "port": 8020
+  , "paths": {
+    "controllers": "controllers"
+    , "templates": "templates"
+    , "collections": "collections"
+    , "models": "models"
+    , "mutualRoutes": "routes.json"
+    , "serverRoutes": "serverRoutes.json"
+  }
+  , "renders": {
+    "templates": "assets/_js/templates"
+    , "js": "assets/_js"
+  }
+}
