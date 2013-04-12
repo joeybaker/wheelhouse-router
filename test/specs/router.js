@@ -10,6 +10,16 @@ describe('router', function(){
     app.router.routes.should.be.an('object')
   })
 
+  describe('server controllers', function(){
+    it('modifies the output', function(done){
+      request.get('http://localhost:' + port, function(err, res, body){
+        body.should.exist
+        body.indexOf('api value').should.not.equal(-1)
+        done()
+      })
+    })
+  })
+
   describe('/', function(){
     it('renders the home controller', function(done){
       request.get('http://localhost:' + port, function(err, res, body){

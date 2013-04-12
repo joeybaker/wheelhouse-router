@@ -2,7 +2,9 @@
 
 module.exports = {
   index: function(){
-    this.render(this, 'home')
+    return {
+      view: 'home'
+    }
   }
 }
 
