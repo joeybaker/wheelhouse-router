@@ -15,7 +15,8 @@ module.exports = {
       view: 'streets/detail'
       , collection: 'streets'
       , data: function(collection){
-        return collection.findWhere({name: street}).toJSON()
+        var model = collection.findWhere({name: street})
+        return model ? model.toJSON() : {}
       }
     }
   }

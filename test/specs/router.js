@@ -24,7 +24,7 @@ describe('router', function(){
     it('renders the home controller', function(done){
       request.get('http://localhost:' + port, function(err, res, body){
         body.should.exist
-        body.indexOf('{"view":"home"}').should.not.equal(-1)
+        body.indexOf('"view":"home"').should.not.equal(-1)
         done()
       })
     })
