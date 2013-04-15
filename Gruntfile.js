@@ -1,7 +1,10 @@
 'use strict';
+var path = require('path')
+
 module.exports = function(grunt){
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
+    , config: grunt.file.readJSON('test/fixtures/config.json')
     , meta: {
       version: '<%= pkg.version %>'
       , banner: '/*! <%= pkg.name %> - v<%= meta.version %> - ' +
@@ -40,6 +43,55 @@ module.exports = function(grunt){
         , src: '<%= bump.patch.src %>'
       }
     }
+    , browserify2: {
+      test: {
+        entry: './test/fixtures/main.js'
+        , debug: true
+        , compile: './test/fixtures/main.compiled.js'
+        , beforeHook: function(bundle){
+          var shim = require('browserify-shim')
+
+          // make files nicer to require
+          // anything in the JS dir
+          // grunt.file.recurse('./test/fixtures/', function(abspath){
+          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('test/fixtures/', '').replace('.js', '')})
+          // })
+          // // templates can be accessed via `templates/**`
+          // grunt.file.recurse('./assets/_js/templates/', function(abspath){
+          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('assets/_js/', '').replace('.js', '')})
+          // })
+          // // controllers can be fetched via `controllers/**`
+          // // also, collections and models
+          grunt.util._.each(['collections', 'controllers', 'models', 'views'], function(dir){
+            grunt.file.recurse('./test/fixtures/' + dir, function(abspath){
+              if (abspath.indexOf('api/') === -1) bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('test/fixtures/', '').replace('.js', '')})
+            })
+          })
+          // // views
+          // // remove underscores from the front, so that partials are nicer to require
+          // grunt.file.recurse('./app/views/', function(abspath){
+          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('app/', '').replace('.js', '').replace('/_', '/')})
+          // })
+          // // handlebars helpers built into wheelhouse-handlebars fetched via `helpers/**`
+          // grunt.file.recurse('./node_modules/wheelhouse-handlebars/lib/helpers/', function(abspath){
+          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('node_modules/wheelhouse-handlebars/lib/', '').replace('.js', '')})
+          // })
+
+          // we need to shim some libraries to get things playing nicely
+          shim(bundle, {
+            // jquery isn't commonJS compatible at all
+            jquery: {path: './node_modules/jquery-browser/lib/jquery.js', exports: '$'}
+            // , handlebars: {path: './assets/components/handlebars/handlebars.runtime.js', exports: 'Handlebars'}
+          })
+            // make up for using bower instead of npm
+            // replace underscore with lodash
+            // .require(require.resolve('./assets/components/lodash/dist/lodash.js'), {expose: 'underscore'})
+            // .require(require.resolve('./node_modules/jquery/jquery.js'), {expose: 'jquery'})
+            .require(require.resolve('./node_modules/handlebars/dist/handlebars.runtime.js'), {expose: 'handlebars'})
+
+        }
+      }
+    }
     , simplemocha: {
       options: {
         timeout: 2000
@@ -48,6 +100,55 @@ module.exports = function(grunt){
       }
       , all: {
         src: ['test/specs/**/*.js']
+      }
+    }
+    , mocha: {
+      all: {
+        options: {
+          run: true
+          , urls: ['http://localhost:<%= connect.test.options.port %>/js-tests']
+        }
+      }
+    }
+    , connect: {
+      test: {
+        options: {
+          port: '<%= config.port + 10001 %>'
+          // , keepalive: true
+          , middleware: function(connect) {
+            return [
+              connect.static(path.join(__dirname, '.'))
+              , function(req, res) {
+                var Handlebars = require('handlebars')
+                  , request = require('request')
+                  , specs = []
+                  , template
+
+                // TODO: match changed files against specs so that we're sure to only run necessary tests
+                // console.log(grunt.regarde.changed)
+
+                console.log(req.url)
+                // proxy through calls to the api controller so that the test server can get data
+                if (req.url.indexOf('/api') > -1) {
+                  request('http://localhost:<%= config.port %>' + req.url, function(err, result, body) {
+                    if (err) throw err
+
+                    res.end(body)
+                  })
+                }
+                // hardcoded route for the test runner
+                else if (req.url === '/js-tests') {
+                  grunt.file.recurse('./test/client/specs/', function(abspath){
+                    if (/\.js$/.test(abspath)) specs.push(abspath)
+                  })
+
+                  template = Handlebars.compile(grunt.file.read('test/client/test.hbs'))
+                  res.end(template({specs: specs}))
+                }
+              }
+            ]
+          }
+        }
       }
     }
     , shell: {
@@ -121,12 +222,15 @@ module.exports = function(grunt){
     }
   })
 
+  grunt.loadNpmTasks('grunt-contrib-connect')
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-simple-mocha')
+  grunt.loadNpmTasks('grunt-browserify2')
   grunt.loadNpmTasks('grunt-notify')
+  grunt.loadNpmTasks('grunt-mocha')
   grunt.loadNpmTasks('grunt-shell')
   grunt.loadNpmTasks('grunt-bumpx')
 
-  grunt.registerTask('test', ['simplemocha'])
-  grunt.registerTask('publish', ['shell:gitRequireCleanTree', 'jshint', 'shell:npmTest', 'bump:' + (grunt.option.get('bump') || 'patch'), 'shell:gitCommitPackage', 'shell:gitTag', 'shell:gitPush', 'shell:npmPublish'])
+  grunt.registerTask('test', ['simplemocha', 'browserify2', 'connect:test', 'mocha'])
+  grunt.registerTask('publish', ['shell:gitRequireCleanTree', 'jshint', 'shell:npmTest', 'bump:' + (grunt.option('bump') || 'patch'), 'shell:gitCommitPackage', 'shell:gitTag', 'shell:gitPush', 'shell:npmPublish'])
 }

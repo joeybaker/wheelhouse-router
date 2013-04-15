@@ -5,7 +5,7 @@
   "main": "index.js",
   "browser": "./lib/clientRouter.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "mocha ./test/specs/router.js"
   },
   "repository": {
     "type": "git",
@@ -38,11 +38,18 @@
     "grunt-notify": "~0.1",
     "grunt-contrib-jshint": "~0.1",
     "chai": "~1.5",
-    "mocha": "~1.8",
+    "mocha": "~1.9",
     "grunt-simple-mocha": "~0.3",
     "union": "~0.3",
     "grunt-shell": "~0.2",
-    "request": "~2.16.6"
+    "request": "~2.16.6",
+    "grunt-mocha": "~0.3.1",
+    "handlebars": "~1.0.10",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-browserify2": "~0.1.6",
+    "browserify": "~2.12.0",
+    "browserify-shim": "~2.0.3",
+    "jquery-browser": "~1.9.1-1"
   },
   "peerDependencies": {
     "flatiron": "~0.3"
