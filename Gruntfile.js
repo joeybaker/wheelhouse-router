@@ -113,14 +113,13 @@ module.exports = function(grunt){
     , connect: {
       test: {
         options: {
-          port: '<%= config.port + 10001 %>'
+          port: '<%= config.port + 1 %>'
           // , keepalive: true
           , middleware: function(connect) {
             return [
               connect.static(path.join(__dirname, '.'))
               , function(req, res) {
                 var Handlebars = require('handlebars')
-                  , request = require('request')
                   , specs = []
                   , template
 
@@ -130,14 +129,11 @@ module.exports = function(grunt){
                 console.log(req.url)
                 // proxy through calls to the api controller so that the test server can get data
                 if (req.url.indexOf('/api') > -1) {
-                  request('http://localhost:<%= config.port %>' + req.url, function(err, result, body) {
-                    if (err) throw err
 
-                    res.end(body)
-                  })
+                  res.end(JSON.stringify([{name: 'street1', id: 1}, {name: 'street 2', id: 2}]))
                 }
-                // hardcoded route for the test runner
-                else if (req.url === '/') {
+                // always just run the clientside tests
+                else {
                   grunt.file.recurse('./test/client/specs/', function(abspath){
                     if (/\.js$/.test(abspath)) specs.push(abspath)
                   })

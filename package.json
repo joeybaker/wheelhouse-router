@@ -5,7 +5,7 @@
   "main": "index.js",
   "browser": "./lib/clientRouter.js",
   "scripts": {
-    "test": "mocha ./test/specs/router.js"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",

@@ -44,28 +44,28 @@ app.start(8999)
 // assumes you're using browserify
 
 var Router = require('wheelhouse-router')
-window.A = { // a global object to hold all of our app
-  Views: {} // raw views, call with `var view = new A.Views.view`
-  , Templates: {} // raw templates
-  , Collections: {} // raw collections
-  , Models: {} // raw models
-  , Datas: {} // created collections, will actually have data.
-  , Renders: {} // created views, this is a saved generated view
-  , Router: new Router({
-    routesJSON: require('app/routes.json')
+  , A = {}
+
+  A.Router = new Router({
+    routesJSON: require('./routes.json')
     , collections: 'collections/'
     , views: 'views/'
     , controllers: 'controllers/'
-    , app: window.A
+    , app: A
+    , pushState: true
   })
-  , init: function(){
-    if (Backbone.history.start({pushState: true})) A.Router.started = true
-  }
-}
-
-A.init()
 
 ```
+
+Creating a new instance will automatically start `Backbone.history` with `pushState` enabled, but you can override that in the options.
+
+You'll be able to access you raw and compiled Backbone objects attached to your app object (`A` in the example above. If you don't pass an `app` option, you can access this via `router.app`:
+* `router.app.Views`: Raw Backbone views. (e.g. `new A.Views['home/index']`)
+* `router.app.Renders`: Cached compiled views. (e.g. `A.Renders['home/index'].render()`)
+* `router.app.Templates`: Templates
+* `router.app.Collections`: Raw Backbone collections (e.g. `new A.Collections.streets`)
+* `router.app.Datas`: Backbone collections with data (e.g. `A.Datas.streets.fetch()`)
+* `router.app.Controllers`: Wheelhouse controllers. Probably not that useful external to the router.
 
 ### routes.json
 A JSON file that defines the routes.
@@ -109,7 +109,7 @@ In the the context of these actions is the typical connect-style request object.
 * `collection`: the path of the Backbone collection. Relative to the collection path you set in the config.
 * `model`: only used client side. If specified, will get passed to the view.
 * `data`: a function that gets the fetched collection passed in as the only argument. You can then map/reduce the collection and return a subset of the collection, a single model, or an arbitrary array or object. The return value should be in JSON for the template to process.
-* `bootstrap`: you can hand JSON off to the template that will be used to bootstrap your collections client-side
+* `bootstrap`: you can hand JSON off to the template that will be used to bootstrap your collections client-side, as the handlebars attr `{{_bootstrapData}}`.
 * `title`: specify the `<title>` attribute
 * `meta`: an object that will be used to fill out the `<meta>` tags
 * _Note_: additional params only works client-side since on the server, the view is not processed, just the templates. This is on the docket of things to improve.
@@ -164,11 +164,11 @@ module.exports = {
 ```
 
 ## tests
-_Note_ Client side tests aren't done yet.
 
 ### The grunt way
-You must have [grunt-cli](https://github.com/gruntjs/grunt-cli) installed: `sudo npm i -g grunt-cli`
-`npm test`
+You must have [grunt-cli](https://github.com/gruntjs/grunt-cli) installed: `sudo npm i -g grunt-cli`. This will run both server and client-side tests.
+`grunt test`
 
 ### The Mocha way
+This only tests server-side tests.
 `mocha test/specs -ui bdd`
