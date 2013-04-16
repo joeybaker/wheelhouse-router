@@ -55,7 +55,8 @@ window.A = { // a global object to hold all of our app
     routesJSON: require('app/routes.json')
     , collections: 'collections/'
     , views: 'views/'
-    , controllers: 'controllers'
+    , controllers: 'controllers/'
+    , app: window.A
   })
   , init: function(){
     if (Backbone.history.start({pushState: true})) A.Router.started = true

@@ -106,7 +106,7 @@ module.exports = function(grunt){
       all: {
         options: {
           run: true
-          , urls: ['http://localhost:<%= connect.test.options.port %>/js-tests']
+          , urls: ['http://localhost:<%= connect.test.options.port %>/']
         }
       }
     }
@@ -137,7 +137,7 @@ module.exports = function(grunt){
                   })
                 }
                 // hardcoded route for the test runner
-                else if (req.url === '/js-tests') {
+                else if (req.url === '/') {
                   grunt.file.recurse('./test/client/specs/', function(abspath){
                     if (/\.js$/.test(abspath)) specs.push(abspath)
                   })
