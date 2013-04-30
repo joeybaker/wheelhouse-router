@@ -35,6 +35,7 @@ describe('router', function(){
     describe('/', function(){
       it('renders the street controller with the index action', function(done){
         request.get(url, function(err, res, body){
+          console.log(err, res, body)
           body.should.exist
           body.indexOf('"view":"streets/index"').should.not.equal(-1)
           done()
