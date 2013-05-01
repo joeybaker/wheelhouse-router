@@ -3,6 +3,8 @@ Wheelhouse Router
 
 A wheelhouse package that unifies the [backbone router](http://backbonejs.org/#Router) with [flatiron's director](https://github.com/flatiron/director), so that you can write controllers that work both server and client side.
 
+Currently requires [Browserify](http://github.com/substack/browswerify)
+
 ## Usage
 
 ### Server
@@ -99,21 +101,60 @@ A companion routes file that has routes only the server will use. This is useful
 
 This is contained in a separate file so that the routes are never sent to the client.
 
-### controller
+### controllers
 Controllers are files that work both both client and server-side to tell a route what to do. It's assumed that mostly you'll want to get data from a collection and hand it off to a view. Controllers are modules that export an object with keys that are the actions. The values are functions that do any processing the controller needs to do.
 
 In the the context of these actions is the typical connect-style request object. So, you've got `this.req`  and `this.res`. Ultimately, you'll need to return an object that contains a view and any other options for the layout or simply call `this.res.end()` or `this.res.json()`.
 
 #### the return object
-* `view`: the path of the Backbone view that you want to render. This is relative to the view path set when the router is configured.
-* `collection`: the path of the Backbone collection. Relative to the collection path you set in the config.
-* `model`: only used client side. If specified, will get passed to the view.
-* `data`: a function that gets the fetched collection passed in as the only argument. You can then map/reduce the collection and return a subset of the collection, a single model, or an arbitrary array or object. The return value should be in JSON for the template to process.
-* `bootstrap`: you can hand JSON off to the template that will be used to bootstrap your collections client-side, as the handlebars attr `window._bootstrapData = {{{_data}}}`.
-* `title`: specify the `<title>` attribute
-* `meta`: an object that will be used to fill out the `<meta>` tags
-* _Note_: additional params only works client-side since on the server, the view is not processed, just the templates. This is on the docket of things to improve.
+##### view
+The path of the Backbone view that you want to render. This is relative to the view path set when the router is configured.
 
+```js
+view: 'viewName'
+```
+##### collection
+The path of the Backbone collection. Relative to the collection path you set in the config.
+
+```js
+collection: 'collectionName'
+```
+
+##### model
+Only used client side. If specified, will get passed to the view. Define a function that receives the collection as it's sole argument. Return the model object.
+
+```js
+// route would be something like: /path/:id
+get: function(id) {
+…
+  model: function(collection){
+    return collection.get(id)
+  }
+…
+}
+```
+
+##### data
+A function that gets the fetched collection passed in as the only argument. You can then map/reduce the collection and return a subset of the collection, a single model, or an arbitrary array or object. The return value should be in JSON for the template to process.
+
+This is only used server-side.
+
+If not defined, it will use the `model.toJSON()`, if that's not defined, it will use `collection.toJSON()`
+
+_example is the same as the model example_
+
+##### bootstrap
+You can hand JSON off to the template that will be used to bootstrap your collections client-side, as the handlebars attr `window._bootstrapData = {{{_data}}}`.
+
+If not defined, it will use the `model.toJSON()`, if that's not defined, it will use `collection.toJSON()`
+
+_example is the same as the model example_
+
+##### title
+Specify the `<title>` attribute
+
+##### meta
+An object that will be used to fill out the `<meta>` tags
 
 ```js
 // controllers/example.js
@@ -137,6 +178,11 @@ module.exports = {
         return collection.findWhere({id: id})
       }
     })
+  }
+  // another action, this one just returns json
+  // note: this only works serverside
+  , action2: function(){
+    this.res.json({json: 'hello world'})
   }
 }
 
