@@ -18,6 +18,7 @@ describe('Client router', function(){
     before(function(){
       router.navigate('/streets', {trigger: true})
     })
+    it('bootstraps data')
     it('has the URL /streets', function(){
       window.location.pathname.should.equal('/streets')
     })
