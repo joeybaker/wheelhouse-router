@@ -109,7 +109,7 @@ In the the context of these actions is the typical connect-style request object.
 * `collection`: the path of the Backbone collection. Relative to the collection path you set in the config.
 * `model`: only used client side. If specified, will get passed to the view.
 * `data`: a function that gets the fetched collection passed in as the only argument. You can then map/reduce the collection and return a subset of the collection, a single model, or an arbitrary array or object. The return value should be in JSON for the template to process.
-* `bootstrap`: you can hand JSON off to the template that will be used to bootstrap your collections client-side, as the handlebars attr `{{_bootstrapData}}`.
+* `bootstrap`: you can hand JSON off to the template that will be used to bootstrap your collections client-side, as the handlebars attr `window._bootstrapData = {{{_data}}}`.
 * `title`: specify the `<title>` attribute
 * `meta`: an object that will be used to fill out the `<meta>` tags
 * _Note_: additional params only works client-side since on the server, the view is not processed, just the templates. This is on the docket of things to improve.
@@ -130,7 +130,7 @@ module.exports = {
       , data: function(collection){ // data is used to reduce the collection down, you should return JSON for your templates
         return collection.findWhere({id: id}).toJSON()
       }
-      , bootstrap: function(collection){ // give backbone some initial data
+      , bootstrap: function(collection){ // give backbone some initial data. Specify {{}}
         return collection.toJSON()
       }
       , model: function(collection){
