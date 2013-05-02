@@ -3,7 +3,7 @@ Wheelhouse Router
 
 A wheelhouse package that unifies the [backbone router](http://backbonejs.org/#Router) with [flatiron's director](https://github.com/flatiron/director), so that you can write controllers that work both server and client side.
 
-Currently requires [Browserify](http://github.com/substack/browswerify)
+Currently requires [Browserify](https://github.com/substack/node-browserify)
 
 ## Usage
 
