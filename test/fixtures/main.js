@@ -14,4 +14,3 @@ window.router = new window.Router({
   , app: window.A
 })
 
-if (window.Backbone.history.start({pushState: true})) window.router.started = true
