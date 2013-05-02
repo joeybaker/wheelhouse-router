@@ -40,6 +40,21 @@ app.use(routerPlugin, {
 app.start(8999)
 ```
 
+If you prefer, you can specify much of the config in a flatiron config.json file. If you do this, you don't have to specify these options when configuring the plugin.
+
+```json
+// config.js
+"paths": {
+  "controllers": "controllers"
+  , "templates": "templates"
+  , "collections": "collections"
+  , "models": "models"
+  , "mutualRoutes": "routes.json"
+  , "serverRoutes": "serverRoutes.json"
+}
+```
+
+
 ### Client JS
 ```js
 // assets/js/main.js (client-side js)
