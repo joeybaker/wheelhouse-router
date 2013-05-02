@@ -1,4 +1,4 @@
-/*global describe, it, before, $, Backbone */
+/*global describe, it, before, $, Backbone, _ */
 'use strict';
 
 describe('Client router', function(){
@@ -25,8 +25,12 @@ describe('Client router', function(){
     it('renders the street index view', function(){
       $('#app').text().indexOf('street index view').should.not.equal('-1')
     })
-    it('renders a view with a parsed collection', function(){
-      A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
+    it('renders a view with a parsed collection', function(done){
+      // defer so that the collection fetch has the chance to process. normally this would happen in the view, so we'd be all good.
+      _.defer(function(){
+        A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
+        done()
+      })
     })
     it('/ works with a / at the end of the url', function(){
       router.navigate('/streets/', {trigger: true})
@@ -44,8 +48,11 @@ describe('Client router', function(){
       it('renders the street detail view', function(){
         $('#app').text().indexOf('street detail view').should.not.equal('-1')
       })
-      it('renders a view with a parsed collection', function(){
-        A.Renders['streets/1'].collection.should.be.instanceof(Backbone.Collection)
+      it('renders a view with a parsed collection', function(done){
+        _.defer(function(){
+          A.Renders['streets/1'].collection.should.be.instanceof(Backbone.Collection)
+          done()
+        })
       })
       // it('renders a view with a parsed model', function(){
       //   A.Renders['streets/1'].model.should.be.instanceof(Backbone.Model)

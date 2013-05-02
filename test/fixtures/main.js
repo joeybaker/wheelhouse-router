@@ -1,6 +1,7 @@
 'use strict';
 
 window.$ = require('jquery')
+window._ = require('lodash')
 window.Backbone = require('backbone')
 window.Router = require('../../lib/clientRouter.js')
 window.routes = require('./routes.json')
