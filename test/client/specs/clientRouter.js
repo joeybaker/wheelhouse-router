@@ -28,6 +28,11 @@ describe('Client router', function(){
     it('renders a view with a parsed collection', function(){
       A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
     })
+    it('/ works with a / at the end of the url', function(){
+      router.navigate('/streets/', {trigger: true})
+      window.location.pathname.should.equal('/streets/')
+      $('#app').text().indexOf('street index view').should.not.equal('-1')
+    })
 
     describe('/:id', function(){
       before(function(){
