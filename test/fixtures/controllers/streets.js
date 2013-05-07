@@ -30,5 +30,22 @@ module.exports = {
       }
     }
   }
+  , edit: function(street){
+    return {
+      view: 'streets/edit'
+      , collection: 'streets'
+      , model: function(collection){
+        return collection.get(street)
+      }
+      , data: function(collection){
+        var model = collection.findWhere({name: street})
+        return model ? model.toJSON() : {}
+      }
+      , bootstrap: function(collection){
+        var model = collection.findWhere({name: street})
+        return model ? model.toJSON() : null
+      }
+    }
+  }
 }
 

@@ -51,8 +51,17 @@ describe('router', function(){
         })
       })
     })
-  })
 
+    describe('/:id/edit/', function(){
+      it('renders the street controller with the edit action', function(done){
+        request.get(url + '/1/edit/', function(err, res, body){
+          body.should.exist
+          body.indexOf('"view":"streets/edit"').should.not.equal(-1)
+          done()
+        })
+      })
+    })
+  })
 
   describe('/api', function(){
     describe('/streets', function(){
