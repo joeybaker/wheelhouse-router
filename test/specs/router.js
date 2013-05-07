@@ -20,6 +20,14 @@ describe('router', function(){
     })
   })
 
+  it('redirects when given a redirect method', function(done){
+    var url = 'http://localhost:' + port + '/redirect'
+    request(url, function(err, res){
+      res.req.path.should.equal('/redirected')
+      done()
+    })
+  })
+
   describe('/', function(){
     it('renders the home controller', function(done){
       request.get('http://localhost:' + port, function(err, res, body){

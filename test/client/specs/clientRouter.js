@@ -14,6 +14,11 @@ describe('Client router', function(){
     router._started.should.be.true
   })
 
+  it('redirects when told', function(){
+    router.navigate('/redirect', {trigger: true})
+    window.location.pathname.should.equal('/redirected')
+  })
+
   describe('/streets', function(){
     before(function(){
       router.navigate('/streets', {trigger: true})

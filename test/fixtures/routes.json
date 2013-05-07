@@ -1,5 +1,6 @@
 {
   "(/)": {"get": "home#index"}
+  , "redirect(/)": {"301": "/redirected"}
   , "streets(/)": {"get": "streets#index"}
   , "streets/:id/edit": {"get": "streets#edit"}
   , "streets/*": {"get": "streets#detail"}
