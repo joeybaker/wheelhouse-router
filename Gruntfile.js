@@ -100,7 +100,7 @@ module.exports = function(grunt){
         , ui: 'bdd'
       }
       , all: {
-        src: ['test/specs/**/*.js']
+        src: ['test/server/**/*.js']
       }
     }
     , mocha: {
