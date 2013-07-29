@@ -2,6 +2,8 @@
 'use strict';
 var app = require('../fixtures/app')
   , request = require('request')
+  , chai = require('chai')
+  , should = chai.should()
 
 describe('router', function(){
   var port = app.config.get('port')
@@ -91,7 +93,8 @@ describe('router', function(){
         request.put({
           url: url + '/' + encodeURIComponent(id)
           , json: {name: 'test-revised-again'}
-        }, function(err, res){
+        }, function(err, res, body){
+          should.exist(body)
           res.statusCode.should.equal(200)
           done()
         })
