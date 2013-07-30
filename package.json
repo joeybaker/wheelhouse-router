@@ -1,6 +1,6 @@
 {
   "name": "wheelhouse-router",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "A wheelhouse library to marry flatiron's Director with Backbone's router",
   "main": "index.js",
   "browser": "./lib/clientRouter.js",

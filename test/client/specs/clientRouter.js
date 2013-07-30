@@ -19,6 +19,16 @@ describe('Client router', function(){
     window.location.pathname.should.equal('/redirected')
   })
 
+  it('can fetch a collection', function(done){
+    router._fetchCollection(router._setCollection('streets'), function(collection){
+      collection.should.be.instanceof(Backbone.Collection)
+      expect(collection.length).to.be.above(0)
+      done()
+    })
+  })
+
+  it('can parse routes and actions')
+
   describe('/streets', function(){
     before(function(){
       router.navigate('/streets', {trigger: true})
@@ -66,6 +76,6 @@ describe('Client router', function(){
   })
 
   after(function(){
-    router.navigate('/')
+    router.navigate('/', {trigger: true})
   })
 })
