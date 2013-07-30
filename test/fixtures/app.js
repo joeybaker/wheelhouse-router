@@ -28,15 +28,3 @@ app.use(routerPlugin, {
 
 module.exports = app
 if (!app.server) app.start(app.config.get('port'))
-
-// before(function(done){
-//   console.log(app.config.get('port'))
-//   if (!app.server) app.start(app.config.get('port'), done)
-//   else done()
-// })
-
-// after(function(done){
-//   // app.server.close()
-//   app = undefined
-//   done()
-// })

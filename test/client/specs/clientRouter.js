@@ -1,4 +1,4 @@
-/*global describe, it, before, $, Backbone, _ */
+/*global describe, it, before, $, Backbone, _, after, expect */
 'use strict';
 
 describe('Client router', function(){
@@ -11,7 +11,7 @@ describe('Client router', function(){
     window.location.pathname.should.equal('/')
   })
   it('marks that it started', function(){
-    router._started.should.be.true
+    expect(router._started).to.be.true
   })
 
   it('redirects when told', function(){
@@ -65,4 +65,7 @@ describe('Client router', function(){
     })
   })
 
+  after(function(){
+    router.navigate('/')
+  })
 })
