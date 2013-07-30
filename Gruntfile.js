@@ -44,52 +44,43 @@ module.exports = function(grunt){
         , src: '<%= bump.patch.src %>'
       }
     }
-    , browserify2: {
+    , browserify: {
       test: {
-        entry: './test/fixtures/main.js'
-        , debug: true
-        , compile: './test/fixtures/main.compiled.js'
-        , beforeHook: function(bundle){
-          var shim = require('browserify-shim')
-
-          // make files nicer to require
-          // anything in the JS dir
-          // grunt.file.recurse('./test/fixtures/', function(abspath){
-          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('test/fixtures/', '').replace('.js', '')})
-          // })
-          // // templates can be accessed via `templates/**`
-          // grunt.file.recurse('./assets/_js/templates/', function(abspath){
-          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('assets/_js/', '').replace('.js', '')})
-          // })
-          // // controllers can be fetched via `controllers/**`
-          // // also, collections and models
-          grunt.util._.each(['collections', 'controllers', 'models', 'views'], function(dir){
-            grunt.file.recurse('./test/fixtures/' + dir, function(abspath){
-              if (abspath.indexOf('api/') === -1) bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('test/fixtures/', '').replace('.js', '')})
-            })
-          })
-          // // views
-          // // remove underscores from the front, so that partials are nicer to require
-          // grunt.file.recurse('./app/views/', function(abspath){
-          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('app/', '').replace('.js', '').replace('/_', '/')})
-          // })
-          // // handlebars helpers built into wheelhouse-handlebars fetched via `helpers/**`
-          // grunt.file.recurse('./node_modules/wheelhouse-handlebars/lib/helpers/', function(abspath){
-          //   bundle.require(require.resolve(path.join(__dirname, abspath)), {expose: abspath.replace('node_modules/wheelhouse-handlebars/lib/', '').replace('.js', '')})
-          // })
-
-          // we need to shim some libraries to get things playing nicely
-          shim(bundle, {
-            // jquery isn't commonJS compatible at all
-            jquery: {path: './node_modules/jquery-browser/lib/jquery.js', exports: '$'}
-            // , handlebars: {path: './assets/components/handlebars/handlebars.runtime.js', exports: 'Handlebars'}
-          })
-            // make up for using bower instead of npm
-            // replace underscore with lodash
-            // .require(require.resolve('./assets/components/lodash/dist/lodash.js'), {expose: 'underscore'})
-            // .require(require.resolve('./node_modules/jquery/jquery.js'), {expose: 'jquery'})
-            .require(require.resolve('./node_modules/handlebars/dist/handlebars.runtime.js'), {expose: 'handlebars'})
-
+        src: './test/fixtures/main.js'
+        , dest: './test/fixtures/main.compiled.js'
+        , options: {
+          debug: true
+          , shim: {
+            jquery: {
+              path: './node_modules/jquery-browser/lib/jquery.js'
+              , exports: '$'
+            }
+          }
+          , alias: [
+            './node_modules/handlebars/dist/handlebars.runtime.js:handlebars'
+          ]
+          , aliasMappings: [
+            {
+              cwd: './test/fixtures/collections'
+              , src: ['**/*.js']
+              , dest: 'collections'
+            }
+            , {
+              cwd: './test/fixtures/controllers'
+              , src: ['**/*.js']
+              , dest: 'controllers'
+            }
+            , {
+              cwd: './test/fixtures/models'
+              , src: ['**/*.js']
+              , dest: 'models'
+            }
+            , {
+              cwd: './test/fixtures/views'
+              , src: ['**/*.js']
+              , dest: 'views'
+            }
+          ]
         }
       }
     }
@@ -222,7 +213,7 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-connect')
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-simple-mocha')
-  grunt.loadNpmTasks('grunt-browserify2')
+  grunt.loadNpmTasks('grunt-browserify')
   grunt.loadNpmTasks('grunt-notify')
   grunt.loadNpmTasks('grunt-mocha')
   grunt.loadNpmTasks('grunt-shell')
