@@ -84,6 +84,24 @@ You'll be able to access you raw and compiled Backbone objects attached to your 
 * `router.app.Datas`: Backbone collections with data (e.g. `A.Datas.streets.fetch()`)
 * `router.app.Controllers`: Wheelhouse controllers. Probably not that useful external to the router.
 
+### `app.router.render(reqObject, options, collection|model)`
+This method gets attached to the main app router object.
+
+#### `reqObject`
+When called from within a flatiron route: `this`
+
+#### `options`
+An object that can contain:
+* data: data to pass to the view
+* bootstrap: data to pass to the layout for boostrapping
+* title: the title of the page
+* meta: object for the page metadata
+
+See below for more info.
+
+#### `collection|model`
+A backbone collection or model to hand off to the view. This is overriden by the data object, or passed off to data if data is a function.
+
 ### routes.json
 A JSON file that defines the routes.
 
@@ -170,6 +188,9 @@ Specify the `<title>` attribute
 
 ##### meta
 An object that will be used to fill out the `<meta>` tags
+
+##### user
+This currently isn't configurable, but if the `req` object has a `user` object on it, it will be passed to the layout. If the `user` object has a `toJSON` method on it, that will be called.
 
 ```js
 // controllers/example.js
