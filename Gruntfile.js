@@ -26,6 +26,7 @@ module.exports = function(grunt){
       patch: {
         options: {
           part: 'patch'
+          , tabSize: 2
         }
         , src: [
           'package.json'
@@ -34,12 +35,14 @@ module.exports = function(grunt){
       , minor: {
         options: {
           part: 'minor'
+          , tabSize: 2
         }
         , src: '<%= bump.patch.src %>'
       }
       , major: {
         options: {
           part: 'major'
+          , tabSize: 2
         }
         , src: '<%= bump.patch.src %>'
       }
