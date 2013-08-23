@@ -43,7 +43,7 @@ describe('Client router', function(){
     it('renders a view with a parsed collection', function(done){
       // defer so that the collection fetch has the chance to process. normally this would happen in the view, so we'd be all good.
       _.defer(function(){
-        A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
+        window.A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
         done()
       })
     })
@@ -65,7 +65,7 @@ describe('Client router', function(){
       })
       it('renders a view with a parsed collection', function(done){
         _.defer(function(){
-          A.Renders['streets/1'].collection.should.be.instanceof(Backbone.Collection)
+          window.A.Renders['streets/1'].collection.should.be.instanceof(Backbone.Collection)
           done()
         })
       })
