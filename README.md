@@ -84,8 +84,9 @@ You'll be able to access you raw and compiled Backbone objects attached to your 
 * `router.app.Datas`: Backbone collections with data (e.g. `A.Datas.streets.fetch()`)
 * `router.app.Controllers`: Wheelhouse controllers. Probably not that useful external to the router.
 
+
 ### `app.router.render(reqObject, options, collection|model)`
-This method gets attached to the main app router object.
+This method gets attached to the main app router object. The rendered view gets saved in `router.Renders`. When a new router is triggered, the views events are automatically destoyed and a `remove` event is triggered on the view.
 
 #### `reqObject`
 When called from within a flatiron route: `this`
