@@ -1,7 +1,7 @@
 Wheelhouse Router
 =======================
 
-[![NPM](https://nodei.co/npm/<package>.png)](https://nodei.co/npm/<package>/)
+[![NPM](https://nodei.co/npm/wheelhouse-router.png)](https://nodei.co/npm/wheelhouse-router/)
 
 A wheelhouse package that unifies the [backbone router](http://backbonejs.org/#Router) with [flatiron's director](https://github.com/flatiron/director), so that you can write controllers that work both server and client side.
 
