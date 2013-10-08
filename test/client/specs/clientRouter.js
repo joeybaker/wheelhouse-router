@@ -29,6 +29,8 @@ describe('Client router', function(){
 
   it('can parse routes and actions')
 
+  it('properly restarts after adding routes')
+
   describe('/streets', function(){
     before(function(){
       router.navigate('/streets', {trigger: true})
