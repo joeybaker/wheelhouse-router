@@ -36,7 +36,10 @@ app.use(routerPlugin, {
   , collections: './collections/' // path to your collections
   , controllers: './controllers/' // path to your controllers
   , render: function(viewName, viewData, layoutOptions){} // defaults to app.render
-  , err404: 'err/404' // the path to your 404 template
+  , err: {
+    404: 'err/404' // the path to your 404 template
+    , 403: 'err/403'
+  }
 })
 
 app.start(8999)
