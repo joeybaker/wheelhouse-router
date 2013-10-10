@@ -42,6 +42,19 @@ app.use(routerPlugin, {
   }
   , on: [function(){}] // array of functions to call on every route
   , before: [function(){}] // array of functions to call before every route
+  , permissions: function(method, path){
+    this.req.url // the context is the typical flatiron request. You have access to `this.req` and `this.res`. There's no need to send a response if you don't want to override the default behavior of sending a 403 and the 403 error doc
+    method // GET, POST, etc…
+    path // the path matched from your routes JSON
+
+    // return truthy values to allow the path to be accessible
+    // return falsey values to disallow the path and send a 403
+
+    // e.g.
+
+    if (path.indexOf('/admin') === 0 && !this.req.isAuthenticated()) return false
+    else return true
+  }
 })
 
 app.start(8999)
@@ -266,5 +279,6 @@ This only tests server-side tests.
 ## Changelog
 
 ### 0.4.0
+* expose a `permissions` method for the server to be able to handle route permissions
 * **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
 * The director `on` and `before` methods are now exposed in the server options
