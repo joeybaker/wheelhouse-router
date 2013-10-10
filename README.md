@@ -31,8 +31,8 @@ app.use(flatiron.plugins.static, {
 
 app.use(routerPlugin, {
   base: __dirname // all paths are relative to this directory
-  , mutualRoutes: './routes.json' // routes that are common client and server side
-  , serverRoutes: './routesServer.json' // routes that only the server will have (e.g. the routes that you'll go to get get JSON for your collections)
+  , mutualRoutes: require('./routes.json') // routes that are common client and server side
+  , serverRoutes: require('./routesServer.json') // routes that only the server will have (e.g. the routes that you'll go to get get JSON for your collections)
   , collections: './collections/' // path to your collections
   , controllers: './controllers/' // path to your controllers
   , render: function(viewName, viewData, layoutOptions){} // defaults to app.render
@@ -260,3 +260,8 @@ You must have [grunt-cli](https://github.com/gruntjs/grunt-cli) installed: `sudo
 ### The Mocha way
 This only tests server-side tests.
 `mocha test/specs -ui bdd`
+
+## Changelog
+
+### 0.4.0
+* **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
