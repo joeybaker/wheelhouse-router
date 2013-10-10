@@ -27,7 +27,7 @@
   "author": "Joey Baker",
   "license": "BSD",
   "dependencies": {
-    "lodash": "~1.1",
+    "lodash": "~2.0.0",
     "backbone": "~1.0",
     "underscore.string": "~2.3"
   },
@@ -35,19 +35,20 @@
     "flatiron": "~0.3",
     "grunt": "~0.4",
     "grunt-bumpx": "~0.1",
-    "grunt-notify": "~0.1",
-    "grunt-contrib-jshint": "~0.1",
-    "chai": "~1.5",
-    "mocha": "~1.9",
-    "grunt-simple-mocha": "~0.3",
+    "grunt-notify": "~0.2",
+    "grunt-contrib-jshint": "~0.6",
+    "chai": "~1.7",
+    "mocha": "~1.13",
+    "grunt-simple-mocha": "~0.4",
     "union": "~0.3",
-    "grunt-shell": "~0.2",
+    "grunt-shell": "~0.4",
     "request": "~2.16.6",
-    "grunt-mocha": "~0.3.1",
-    "handlebars": "~1.0.10",
-    "grunt-contrib-connect": "~0.3.0",
+    "grunt-mocha": "~0.4.1",
+    "handlebars": "~1.0",
+    "grunt-contrib-connect": "~0.5.0",
     "jquery-browser": "~1.9.1-1",
-    "grunt-browserify": "~1.2.1"
+    "grunt-browserify": "~1.2.8",
+    "browserify": "~2.33"
   },
   "peerDependencies": {
     "flatiron": "~0.3"
