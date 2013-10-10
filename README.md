@@ -292,6 +292,7 @@ This only tests server-side tests.
 ### 0.4.0
 * expose a `permissions` method for the server to be able to handle route permissions
 * **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
+* **breaking change** the server-side `err` option is now an object instead of a string so that we can specify more than one type of error
 * The director `on` and `before` methods are now exposed in the server options
 * **breaking change** no longer fetching the collection on every request if `app.collections` has the collection for the route. This should be a major speed up.
 * server-side can now specify a template path if you want to override the view path
