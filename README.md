@@ -167,6 +167,16 @@ The path of the Backbone view that you want to render. This is relative to the v
 ```js
 view: 'viewName'
 ```
+
+##### template
+This is only used server-side.
+
+The path of the template that you want to render. This defaults to the view path, but you can optionally override it with a separate template path. This is the path that will be the first argument to `app.render`
+
+```js
+template: 'templateName'
+```
+
 ##### collection
 The path of the Backbone collection. Relative to the collection path you set in the config.
 
@@ -220,6 +230,7 @@ module.exports = {
   action: function(id){ // if the route has arguments on it, they get passed in here.
     return {
       view: 'viewName'
+      , template: 'templateName' // optional, overrides the `view` attr
       , collection: 'collectionName'
       , title: 'title of the page'
       , meta: {
@@ -282,3 +293,4 @@ This only tests server-side tests.
 * expose a `permissions` method for the server to be able to handle route permissions
 * **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
 * The director `on` and `before` methods are now exposed in the server options
+* server-side can now specify a template path if you want to override the view path
