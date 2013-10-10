@@ -40,6 +40,8 @@ app.use(routerPlugin, {
     404: 'err/404' // the path to your 404 template
     , 403: 'err/403'
   }
+  , on: [function(){}] // array of functions to call on every route
+  , before: [function(){}] // array of functions to call before every route
 })
 
 app.start(8999)
@@ -265,3 +267,4 @@ This only tests server-side tests.
 
 ### 0.4.0
 * **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
+* The director `on` and `before` methods are now exposed in the server options
