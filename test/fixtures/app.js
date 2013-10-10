@@ -20,8 +20,8 @@ app.config.file(path.join(__dirname, 'config.json'))
 app.use(flatiron.plugins.http, {})
 app.use(routerPlugin, {
   base: __dirname // all paths are relative to this directory
-  , mutualRoutes: './routes.json' // routes that are common client and server side
-  , serverRoutes: './routesServer.json' // routes that only the server will have (e.g. the routes that you'll go to get get JSON for your collections)
+  , mutualRoutes: require('./routes.json') // routes that are common client and server side
+  , serverRoutes: require('./routesServer.json') // routes that only the server will have (e.g. the routes that you'll go to get get JSON for your collections)
   , collections: './collections/' // path to your collections
   , controllers: './controllers/' // path to your controllers
 })

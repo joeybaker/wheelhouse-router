@@ -6,9 +6,6 @@
   <title>Mocha Tests</title>
   <link rel="stylesheet" href="/node_modules/mocha/mocha.css">
 
-  {{! Include globals }}
-  {{! <script src="/assets/components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script> }}
-  {{! <script>var _gaq=[]</script> }}
 </head>
 <body>
   {{! Required for browser reporter }}
@@ -23,7 +20,6 @@
   </script>
   {{! assertion lib }}
   <script src="/node_modules/chai/chai.js"></script>
-  {{! <script src="/node_modules/chai-jquery/chai-jquery.js"></script> }}
   <script src="/test/fixtures/main.compiled.js"></script>
 
   {{#each specs}}
@@ -35,7 +31,7 @@
     'use strict';
     // Setup chai
     chai.should()
-    {{! mocha.run() }}
+    mocha.run()
     var expect = chai.expect
   </script>
   {{!

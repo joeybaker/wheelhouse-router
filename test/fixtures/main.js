@@ -5,6 +5,7 @@ window._ = require('lodash')
 window.Backbone = require('backbone')
 window.Router = require('../../lib/clientRouter.js')
 window.routes = require('./routes.json')
+window.Backbone.$ = window.$
 
 window.A = {}
 window.router = new window.Router({
