@@ -30,6 +30,7 @@ describe('Client router', function(){
   it('can parse routes and actions')
 
   it('properly restarts after adding routes')
+  it('doesn\'t retrigger Backbone.History.start if a previous route has been matched')
 
   describe('/streets', function(){
     before(function(){

@@ -123,6 +123,9 @@ See below for more info.
 #### `collection|model`
 A backbone collection or model to hand off to the view. This is overriden by the data object, or passed off to data if data is a function.
 
+### `Backbone.history.urlMatch()`
+Backbone oddly doesn't have a way of detecting if it's matched a route or not. This is a patch that returns a boolean. True if the current route is in the routes tables (across all routers).
+
 ### routes.json
 A JSON file that defines the routes.
 
