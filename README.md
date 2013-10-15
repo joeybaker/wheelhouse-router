@@ -187,6 +187,9 @@ The path of the Backbone collection. Relative to the collection path you set in 
 collection: 'collectionName'
 ```
 
+##### fetch
+Boolean, `true` by default. Only used client-side. Determines if the router will immediately try to fetch the collection if it has no data on rendering the view. Set to `false` for the collection to remain empty.
+
 ##### model
 Only used client side. If specified, will get passed to the view. Define a function that receives the collection as it's sole argument. Return the model object.
 
