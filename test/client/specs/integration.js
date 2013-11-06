@@ -31,6 +31,7 @@ describe('Client router', function(){
 
   it('properly restarts after adding routes')
   it('doesn\'t retrigger Backbone.History.start if a previous route has been matched')
+  it('doesn\'t fetch the collection if fetch is set to false')
 
   describe('/streets', function(){
     before(function(){
