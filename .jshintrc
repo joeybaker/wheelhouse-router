@@ -8,6 +8,7 @@
   , "newcap": true
   , "noarg": true
   , "quotmark": "single"
+  , "freeze": true
 
   , "regexp": false
   , "undef": true
