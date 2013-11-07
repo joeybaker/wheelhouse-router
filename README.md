@@ -229,6 +229,20 @@ An object that will be used to fill out the `<meta>` tags
 ##### user
 This currently isn't configurable, but if the `req` object has a `user` object on it, it will be passed to the layout. If the `user` object has a `toJSON` method on it, that will be called.
 
+##### collection options
+The entire object will be passed to the collection as options. This is handy if you want to do something like override the collection URL.
+
+```js
+action: function(param)
+return {
+  view: '/a/view'
+  , collection: 'someCollection'
+  , url: '/route/' + param // will override the collection's url
+}
+```
+
+##### Example controller
+
 ```js
 // controllers/example.js
 
