@@ -311,6 +311,9 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.5
+* Bug fix for options not always passing the the collection client side
+
 ### 0.4.0
 * expose a `permissions` method for the server to be able to handle route permissions
 * **breaking change** routes are now handed to the server as fully qualified JSON, instead of a path
