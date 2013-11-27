@@ -311,6 +311,10 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.7
+* client router shouldn't care about the `data` option. Deprecate the code that does care about it.
+* `_setCollection` overwrites previous data. Previously, `_setCollection` assumed that a collection with data in it should not be overwritten. Change this behavior to assume that when `_setCollection` is given data to pass to the collection, we want to overwrite any pre-existing data. This is especially useful if a previous router has created the collection, but entered no or bad data.
+
 ### 0.4.5
 * Bug fix for options not always passing the the collection client side
 

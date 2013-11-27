@@ -121,7 +121,7 @@ module.exports = function(grunt){
                 // TODO: match changed files against specs so that we're sure to only run necessary tests
                 // console.log(grunt.regarde.changed)
 
-                console.log(req.url)
+                // console.log(req.url)
                 // proxy through calls to the api controller so that the test server can get data
                 if (req.url.indexOf('/api') > -1) {
 
