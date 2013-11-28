@@ -311,6 +311,9 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.8
+* Router used to store the current url and rendered view on the router itself, but this broke in an environment where there were multiple routers. So, store those on the app object.
+
 ### 0.4.7
 * client router shouldn't care about the `data` option. Deprecate the code that does care about it.
 * `_setCollection` overwrites previous data. Previously, `_setCollection` assumed that a collection with data in it should not be overwritten. Change this behavior to assume that when `_setCollection` is given data to pass to the collection, we want to overwrite any pre-existing data. This is especially useful if a previous router has created the collection, but entered no or bad data.
