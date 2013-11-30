@@ -311,7 +311,7 @@ This only tests server-side tests.
 
 ## Changelog
 
-### 0.4.9
+### 0.4.10
 * Bug fix: client router didn't properly set the `_currentRender`
 
 ### 0.4.8
