@@ -311,6 +311,9 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.9
+* Bug fix: client router didn't properly set the `_currentRender`
+
 ### 0.4.8
 * Router used to store the current url and rendered view on the router itself, but this broke in an environment where there were multiple routers. So, store those on the app object.
 
