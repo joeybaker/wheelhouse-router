@@ -311,6 +311,10 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.11
+* Update a lot of dependencies. __note:__ backbone and browserify remain locked to old versions for compatiblity reasons.
+* Defer the start of routing until the event loop is done processing, we're sure that the router object has been created and assigned to a variable. This ensures that the router's variable will be available to the views it renders.
+
 ### 0.4.10
 * Bug fix: client router didn't properly set the `_currentRender`
 

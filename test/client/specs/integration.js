@@ -1,35 +1,48 @@
-/*global describe, it, before, $, Backbone, _, after, expect */
+/*global describe, it, before, beforeEach, $, Backbone, _, after, expect */
 'use strict';
 
-describe('Client router', function(){
-  var router = window.router
+describe('Client router integration tests', function(){
+  var router
 
-  it('has a render method', function(){
-    router.render.should.be.a('function')
-  })
-  it('starts at the root URL', function(){
-    window.location.pathname.should.equal('/')
-  })
-  it('marks that it started', function(){
-    expect(router._started).to.be.true
-  })
+  describe('initialization', function(){
+    beforeEach(function(done){
+      _.defer(function(){
+        router = window.router
+        done()
+      })
+    })
 
-  it('redirects when told', function(){
-    router.navigate('/redirect', {trigger: true})
-    window.location.pathname.should.equal('/redirected')
-  })
+    it('has a render method', function(){
+      router.render.should.be.a('function')
+    })
+    it('starts at the root URL', function(){
+      window.location.pathname.should.equal('/')
+    })
+    it('marks that it started', function(){
+      expect(router._started).to.be.true
+    })
 
-  it('can fetch a collection', function(done){
-    router._fetchCollection(router._setCollection('streets'), function(collection){
-      collection.should.be.instanceof(Backbone.Collection)
-      expect(collection.length).to.be.above(0)
-      done()
+    it('redirects when told', function(){
+      router.navigate('/redirect', {trigger: true})
+      window.location.pathname.should.equal('/redirected')
+    })
+
+    it('can fetch a collection', function(done){
+      router._fetchCollection(router._setCollection('streets'), function(collection){
+        collection.should.be.instanceof(Backbone.Collection)
+        expect(collection.length).to.be.above(0)
+        done()
+      })
     })
   })
 
   describe('/streets', function(){
-    before(function(){
-      router.navigate('/streets', {trigger: true})
+    before(function(done){
+      // wait for the router to be instantiated before triggering a new route
+      _.defer(function(){
+        router.navigate('/streets', {trigger: true})
+        _.defer(done)
+      })
     })
     it('bootstraps data')
     it('notifies that the first route is the initial route')
@@ -53,8 +66,11 @@ describe('Client router', function(){
     })
 
     describe('/:id', function(){
-      before(function(){
-        router.navigate('/streets/1', {trigger: true})
+      before(function(done){
+        _.defer(function(){
+          router.navigate('/streets/1', {trigger: true})
+          done()
+        })
       })
       it('has the URL /streets/1', function(){
         window.location.pathname.should.equal('/streets/1')
