@@ -102,6 +102,7 @@ module.exports = function(grunt){
         options: {
           run: true
           , urls: ['http://localhost:<%= connect.test.options.port %>/']
+          , log: true
         }
       }
     }
