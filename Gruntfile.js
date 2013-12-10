@@ -222,6 +222,13 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-shell')
   grunt.loadNpmTasks('grunt-bumpx')
 
-  grunt.registerTask('test', ['browserify', 'connect:test', 'simplemocha',  'mocha'])
+  grunt.registerTask('test', function(){
+    if (grunt.option('client'))
+      grunt.task.run(['browserify', 'connect:test', 'mocha'])
+    else if (grunt.option('server'))
+      grunt.task.run(['simplemocha'])
+    else
+      grunt.task.run(['browserify', 'connect:test', 'simplemocha', 'mocha'])
+  })
   grunt.registerTask('publish', ['shell:gitRequireCleanTree', 'jshint', 'shell:npmTest', 'bump:' + (grunt.option('bump') || 'patch'), 'shell:gitCommitPackage', 'shell:gitTag', 'shell:gitPush', 'shell:npmPublish'])
 }
