@@ -1,3 +1,4 @@
+/*global mocha*/
 'use strict';
 
 window.$ = require('jquery')
@@ -8,6 +9,7 @@ window.routes = require('./routes.json')
 window.Backbone.$ = window.$
 
 window.A = {}
+
 window.router = new window.Router({
   routesJSON: window.routes
   , collections: 'collections/'
@@ -16,3 +18,6 @@ window.router = new window.Router({
   , app: window.A
 })
 
+setTimeout(function() {
+  mocha.run()
+})
