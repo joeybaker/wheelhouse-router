@@ -27,4 +27,3 @@ app.use(routerPlugin, {
 })
 
 module.exports = app
-if (!app.server) app.start(app.config.get('port'))

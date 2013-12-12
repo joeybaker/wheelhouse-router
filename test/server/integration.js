@@ -1,4 +1,4 @@
-/*global describe, it */
+/*global describe, it, before */
 'use strict';
 var app = require('../fixtures/app')
   , request = require('request')
@@ -7,6 +7,11 @@ var app = require('../fixtures/app')
 
 describe('router', function(){
   var port = app.config.get('port')
+
+  before(function(done){
+    app.options.log = {console: {silent: true}}
+    app.start(port, done)
+  })
 
   it('attaches to a flatiron app', function(){
     app.router.routes.should.be.an('object')
