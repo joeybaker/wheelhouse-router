@@ -36,7 +36,7 @@ app.use(routerPlugin, {
   , collections: './collections/' // path to your collections
   , controllers: './controllers/' // path to your controllers
   , render: function(viewName, viewData, layoutOptions){} // defaults to app.render
-  , err: {
+  , err: { // empty by default
     404: 'err/404' // the path to your 404 template
     , 403: 'err/403'
   }
@@ -310,6 +310,12 @@ This only tests server-side tests.
 `mocha test/specs -ui bdd`
 
 ## Changelog
+
+### 0.4.12
+* Major refactor of the serverRouter. The code is much easier to read and is much better about alerting users to errors in their config.
+* Start on unit tests for the server router (we already have integration tests)
+* Return a 200 status and headers by default
+* *minor breaking change*: no longer setting the err templates by default
 
 ### 0.4.11
 * Update a lot of dependencies. __note:__ backbone and browserify remain locked to old versions for compatiblity reasons.
