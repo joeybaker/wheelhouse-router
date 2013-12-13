@@ -48,7 +48,9 @@
     "grunt-contrib-connect": "~0.5.0",
     "jquery-browser": "~1.10.2-1",
     "grunt-browserify": "~1.2.11",
-    "browserify": "~2"
+    "browserify": "~2",
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0"
   },
   "peerDependencies": {
     "flatiron": "~0.3"
