@@ -311,6 +311,9 @@ This only tests server-side tests.
 
 ## Changelog
 
+### 0.4.13
+* Only log a stack trace on a 500 error. We don't need traces for 4** errors.
+
 ### 0.4.12
 * Major refactor of the serverRouter. The code is much easier to read and is much better about alerting users to errors in their config.
 * Start on unit tests for the server router (we already have integration tests)

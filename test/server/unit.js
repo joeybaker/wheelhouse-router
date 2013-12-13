@@ -28,7 +28,7 @@ describe('router', function(){
   describe('respondWithError', function(){
     var fn = plugin.internals.respondWithError
 
-    it('logs the stack trace', function(){
+    it('logs the stack trace if the error is 5**', function(){
       var status = 404
         , log = sinon.spy(app.log, 'warn')
 
@@ -36,6 +36,12 @@ describe('router', function(){
       expect(log).to.have.been.called
       // get the second arg of the first call
       expect(log.args[0][1].stack).to.be.an.array
+
+      status = 500
+      fn.call(context, status)
+      expect(log).to.have.been.called
+      // get the second arg of the second call
+      expect(log.args[1][1].stack).to.not.exist
 
       log.restore()
     })
