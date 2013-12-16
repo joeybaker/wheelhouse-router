@@ -90,6 +90,7 @@ var Router = require('wheelhouse-router')
     , controllers: 'controllers/'
     , app: A
     , pushState: true
+    , start: true // automatically start the router. If set to false, you'll have manually call router._start()
   })
 
 ```
@@ -103,7 +104,6 @@ You'll be able to access you raw and compiled Backbone objects attached to your 
 * `router.app.Collections`: Raw Backbone collections (e.g. `new A.Collections.streets`)
 * `router.app.Datas`: Backbone collections with data (e.g. `A.Datas.streets.fetch()`)
 * `router.app.Controllers`: Wheelhouse controllers. Probably not that useful external to the router.
-
 
 ### `app.router.render(reqObject, options, collection|model)`
 This method gets attached to the main app router object. The rendered view gets saved in `router.Renders`. When a new router is triggered, the views events are automatically destoyed and a `remove` event is triggered on the view.

@@ -1,9 +1,59 @@
-/*global expect, describe, it */
+/*global expect, describe, it, beforeEach, afterEach */
 'use strict';
 
 var router = window.router
+  , sinon = window.sinon
+  , Router = window.Router
+  , Backbone = window.Backbone
+  , _ = window._
+  , A
+  , opts
 
-describe('Client router', function(){
+describe('Client router unit tests', function(){
+  beforeEach(function(done){
+    // reset backbone.history
+    Backbone.history.stop()
+    Backbone.history.handlers = []
+    Backbone.history._starting = false
+    Backbone.history.fragment = undefined
+    Backbone.History.started = false
+
+    // reset the app
+    A = {}
+    opts = {
+      routesJSON: {
+        '(/)': {get: 'home#index'}
+      }
+      , app: A
+    }
+
+    // ensure the call stack is clear
+    _.defer(done)
+  })
+
+  describe('options', function(){
+    describe('start', function(){
+      it('does not start History when set to `false`', function(done){
+        var r = new Router(_.extend({
+          start: false
+        }, opts))
+
+        _.defer(function(){
+          expect(r._started).to.be.false
+          done()
+        })
+      })
+
+      it('starts Backbone.history when not set', function(done){
+        var r = new Router(opts)
+        _.defer(function(){
+          expect(Backbone.History.started).to.be.true
+          expect(r._started).to.be.true
+          done()
+        })
+      })
+    })
+  })
   it('can parse routes from json')
   it('can parse routes from actions')
   it('properly restarts after adding routes')
