@@ -18,6 +18,6 @@ window.router = new window.Router({
   , app: window.A
 })
 
-setTimeout(function() {
+setTimeout(function(){
   mocha.run()
 })
