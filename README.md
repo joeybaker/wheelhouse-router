@@ -93,6 +93,12 @@ var Router = require('wheelhouse-router')
     , start: true // automatically start the router. If set to false, you'll have manually call router._start()
   })
 
+  // if you've set the `start` option to true call `start` to kick things off
+  A.Router.start()
+
+  // by default, `start()` is asyc, you can make it call immediately
+  A.Router.start(true)
+
 ```
 
 Creating a new instance will automatically start `Backbone.history` with `pushState` enabled, but you can override that in the options.
@@ -310,6 +316,13 @@ This only tests server-side tests.
 `mocha test/specs -ui bdd`
 
 ## Changelog
+
+### 0.5.0
+* add option to not auto-start the router. This seems to be mostly useful for testing.
+* add a `rotuer#start` method, which enable the user to manually start the router.
+* **breaking change**: when adding routes manually, the router no longer manually restarts. You'll have to call `router.start()`
+* Routers are now assigned a `cid`
+* **breaking change**: the app object no longer contains a `Router`. It's been replaced with `Routers`, an array that lists routers by `cid`.
 
 ### 0.4.13
 * Only log a stack trace on a 500 error. We don't need traces for 4** errors.
