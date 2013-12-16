@@ -103,13 +103,62 @@ describe('router', function(){
   })
 
   describe('getRequestUserJSON', function(){
-    it('returns JSON if the request has a user object')
-    it('returns undefined if the request doesn\'t have a user')
+    var fn = plugin.internals.getRequestUserJSON
+
+    it('returns JSON if the request has a user object', function(){
+      request.req.user = {}
+
+      expect(fn.call(request)).to.be.an.object
+
+      delete request.req.user
+    })
+
+    it('runs toJSON if the request has a user object with a toJSON function', function(){
+      request.req.user = {toJSON: sinon.spy()}
+
+      expect(fn.call(request)).to.be.an.object
+      expect(request.req.user.toJSON).to.have.been.calledOnce
+
+      delete request.req.user
+    })
+
+    it('returns undefined if the request doesn\'t have a user', function(){
+      expect(fn.call(request)).to.not.exist
+    })
   })
 
   describe('parseControllerMethod', function(){
-    it('runs the method with the collection')
-    it('catches errors if the method throws')
+    var fn = plugin.internals.parseControllerMethod
+      , method = 'test'
+      // mock controller
+      , controller = {
+        test: sinon.spy()
+      }
+      , collection = {
+        id: 'this is a collection'
+      }
+
+    it('runs the method with the collection', function(){
+      fn.call(request, controller, method, collection, {})
+      expect(controller.test).to.have.been.calledWith(collection)
+    })
+
+    it.skip('catches errors if the method throws', function(){
+      controller[method] = sinon.mock()
+      controller[method].throws()
+
+      // sinon.spy(plugin.internals, 'parseControllerMethod')
+      sinon.spy(fn)
+      // sinon.spy(controller, method)
+      expect(fn.bind(request, controller, method, collection, {})).to.have.thrown()
+      expect(controller[method]).to.have.thrown()
+
+      // expect(fn.bind(request, controller, method, collection, {})).to.have.thrown()
+      // expect(fn).to.have.thrown()
+
+      plugin.internals.parseControllerMethod.restore()
+    })
+
     it('returns an object if the method is an object')
     it('returns the model if the method is undefined')
     it('returns the collection if the method and model are undefined')
