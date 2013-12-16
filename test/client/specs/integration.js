@@ -1,4 +1,4 @@
-/*global describe, it, before, beforeEach, $, Backbone, _, after, expect */
+/*global describe, it, before, Backbone, _, after, expect */
 'use strict';
 
 describe('Client router integration tests', function(){
