@@ -3,15 +3,18 @@
 
 describe('Client router integration tests', function(){
   var router
+    , $ = window.$
+    // , sinon = window.sinon
+    , A = window.A
+
+  before(function(done){
+    _.defer(function(){
+      router = window.router
+      done()
+    })
+  })
 
   describe('initialization', function(){
-    beforeEach(function(done){
-      _.defer(function(){
-        router = window.router
-        done()
-      })
-    })
-
     it('has a render method', function(){
       router.render.should.be.a('function')
     })
@@ -52,12 +55,28 @@ describe('Client router integration tests', function(){
     it('renders the street index view', function(){
       $('#app').text().indexOf('street index view').should.not.equal('-1')
     })
+
     it('renders a view with a parsed collection', function(done){
-      // defer so that the collection fetch has the chance to process. normally this would happen in the view, so we'd be all good.
-      _.defer(function(){
-        window.A.Renders.streets.collection.should.be.instanceof(Backbone.Collection)
+      // we probably have to wait for ajax to complete
+      if ((A.Renders.streets && !A.Renders.streets.collection) || !A.Renders.streets){
+        $(document).ajaxComplete(function(){
+          A.Renders
+            .streets
+            .collection
+            .should.be.instanceof(Backbone.Collection)
+
+          $(document).unbind('ajaxComplete')
+          done()
+        })
+      }
+      // but it might be fast enough that we don't need to
+      else {
+        A.Renders
+          .streets
+          .collection
+          .should.be.instanceof(Backbone.Collection)
         done()
-      })
+      }
     })
     it('/ works with a / at the end of the url', function(){
       router.navigate('/streets/', {trigger: true})
