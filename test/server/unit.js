@@ -7,7 +7,7 @@ var app = require('../fixtures/app')
   , expect = chai.expect
   , sinon = require('sinon')
   , sinonChai = require('sinon-chai')
-  , context = {
+  , request = {
     req: {}
     , res: {
       end: function(){}
@@ -32,13 +32,13 @@ describe('router', function(){
       var status = 404
         , log = sinon.spy(app.log, 'warn')
 
-      fn.call(context, status)
+      fn.call(request, status)
       expect(log).to.have.been.called
       // get the second arg of the first call
       expect(log.args[0][1].stack).to.be.an.array
 
       status = 500
-      fn.call(context, status)
+      fn.call(request, status)
       expect(log).to.have.been.called
       // get the second arg of the second call
       expect(log.args[1][1].stack).to.not.exist
@@ -50,7 +50,7 @@ describe('router', function(){
       var status = 404
         , log = sinon.spy(app.log, 'warn')
 
-      fn.call(context, status)
+      fn.call(request, status)
       expect(log).to.have.been.called
       // get the second arg of the first call
       expect(log.args[0][1].user).to.be.a.string
@@ -61,44 +61,44 @@ describe('router', function(){
     it('sets the status code', function(){
       var status = 404
 
-      sinon.spy(context.res, 'writeHead')
+      sinon.spy(request.res, 'writeHead')
 
-      fn.call(context, status)
-      expect(context.res.writeHead).to.have.been.calledOnce
-      expect(context.res.writeHead.args[0][0]).to.equal(status)
+      fn.call(request, status)
+      expect(request.res.writeHead).to.have.been.calledOnce
+      expect(request.res.writeHead.args[0][0]).to.equal(status)
 
-      context.res.writeHead.restore()
+      request.res.writeHead.restore()
     })
 
     it('responds with the error template', function(){
       var status = 404
       plugin.internals.options.err[status] = '404'
       sinon.spy(plugin.internals.options, 'render')
-      sinon.spy(context.res, 'end')
+      sinon.spy(request.res, 'end')
 
-      fn.call(context, status)
+      fn.call(request, status)
 
       expect(plugin.internals.options.render).to.have.been.calledOnce
-      expect(context.res.end).to.have.been.calledOnce
+      expect(request.res.end).to.have.been.calledOnce
 
       plugin.internals.options.render.restore()
       delete plugin.internals.options.err[status]
-      context.res.end.restore()
+      request.res.end.restore()
     })
 
     it('responds with the error code if no template is specified', function(){
       var status = 404
       sinon.spy(plugin.internals.options, 'render')
-      sinon.spy(context.res, 'end')
+      sinon.spy(request.res, 'end')
 
       expect(plugin.internals.options.err[status]).to.not.exist
 
-      fn.call(context, status)
+      fn.call(request, status)
 
-      expect(context.res.end).to.have.been.calledOnce
+      expect(request.res.end).to.have.been.calledOnce
 
       plugin.internals.options.render.restore()
-      context.res.end.restore()
+      request.res.end.restore()
     })
   })
 
