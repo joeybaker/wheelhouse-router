@@ -7,6 +7,10 @@ window.Backbone = require('backbone')
 window.Router = require('../../lib/clientRouter.js')
 window.routes = require('./routes.json')
 window.Backbone.$ = window.$
+window.sinon = require('sinon')
+window.sinonChai = require('sinon-chai')
+
+window.chai.use(window.sinonChai)
 
 window.A = {}
 
