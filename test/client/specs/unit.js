@@ -136,6 +136,29 @@ describe('Client router unit tests', function(){
         done()
       })
     })
+
+    it('loads a newly added url if an additional router adds routes, history has already started, no routes matched previously, but a new one does.', function(){
+      var r1, r2
+      sinon.spy(Backbone.history, 'loadUrl')
+
+      r1 = new Router(_.extend({}, opts, {
+        routesJSON: {
+          '/non-route': {get: 'home#index'}
+        }
+        , start: false
+      }))
+      r2 = new Router(_.extend({
+        start: false
+      }, opts))
+
+      r1.start(true)
+      r2.start(true)
+
+      expect(Backbone.history.loadUrl).to.have.been.calledOnce
+      expect(r2._started).to.be.true
+
+      Backbone.history.loadUrl.restore()
+    })
   })
 
   it('can parse routes from json')
@@ -145,6 +168,7 @@ describe('Client router unit tests', function(){
 
   it('doesn\'t fetch the collection if fetch is set to false')
 
+  // TODO: move me to integration tests
   describe('creating multiple routers', function(){
     // when this test starts, we've already triggered a route on the router
     var router2
