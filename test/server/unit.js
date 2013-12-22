@@ -25,7 +25,7 @@ describe('router', function(){
     app.start(port, done)
   })
 
-  describe('respondWithError', function(){
+  describe('#respondWithError', function(){
     var fn = plugin.internals.respondWithError
 
     it('logs the stack trace if the error is 5**', function(){
@@ -35,13 +35,13 @@ describe('router', function(){
       fn.call(request, status)
       expect(log).to.have.been.called
       // get the second arg of the first call
-      expect(log.args[0][1].stack).to.be.an.array
+      expect(log.args[0][1].stack).to.not.exist
 
       status = 500
       fn.call(request, status)
       expect(log).to.have.been.called
       // get the second arg of the second call
-      expect(log.args[1][1].stack).to.not.exist
+      expect(log.args[1][1].stack).to.be.an.array
 
       log.restore()
     })
