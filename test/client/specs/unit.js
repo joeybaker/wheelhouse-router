@@ -32,7 +32,10 @@ describe('Client router unit tests', function(){
   })
 
   describe('#initialize', function(){
-    it('creates a cid')
+    it('creates a cid', function(){
+      var r = new Router(opts)
+      expect(r.cid).to.exist
+    })
   })
 
   describe('options', function(){
