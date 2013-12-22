@@ -11,12 +11,7 @@ var router = window.router
 
 describe('Client router unit tests', function(){
   beforeEach(function(done){
-    // reset backbone.history
-    Backbone.history.stop()
-    Backbone.history.handlers = []
-    Backbone.history._starting = false
-    Backbone.history.fragment = undefined
-    Backbone.History.started = false
+    window.killBackbone()
 
     // reset the app
     A = {}
@@ -60,8 +55,6 @@ describe('Client router unit tests', function(){
         })
       })
     })
-
-    describe('fetch', function(){})
   })
 
   describe('#start', function(){
@@ -167,89 +160,11 @@ describe('Client router unit tests', function(){
   it('can parse routes from json')
   it('can parse routes from actions')
   it('properly restarts after adding routes')
-  it('doesn\'t retrigger `Backbone.history.start` if a previous route has been matched')
 
   it('doesn\'t fetch the collection if fetch is set to false')
 
   // TODO: move me to integration tests
-  describe('creating multiple routers', function(){
-    // when this test starts, we've already triggered a route on the router
-    var router2
-      , router3
-
-    describe('when the first router matches the route, and the second does not', function(){
-      it('doesn\'t re-render the view', function(){
-        router2 = new window.Router({
-          routesJSON: {
-            '(/)': {get: 'home#index'}
-          }
-          , collections: 'collections/'
-          , views: 'views/'
-          , controllers: 'controllers/'
-          , app: window.A
-          , start: false
-        })
-        router3 = new window.Router({
-          routesJSON: {
-            '/router3': {get: 'streets#noop'}
-          }
-          , collections: 'collections/'
-          , views: 'views/'
-          , controllers: 'controllers/'
-          , app: window.A
-          , start: false
-        })
-
-        sinon.spy(router2, 'render')
-        sinon.spy(router3, 'render')
-
-        router2.start(true)
-        router3.start(true)
-
-        expect(Backbone.History.started).to.be.true
-        expect(router2.render).to.have.been.calledOnce
-        expect(router3.render).to.not.have.been.called
-      })
-    })
-
-    describe('when the first router has no valid routes, and the second does', function(){
-      it('doesn\'t re-render', function(){
-        router2 = new window.Router({
-          routesJSON: {
-            '/router3': {get: 'streets#noop'}
-          }
-          , collections: 'collections/'
-          , views: 'views/'
-          , controllers: 'controllers/'
-          , app: window.A
-          , start: false
-        })
-        router3 = new window.Router({
-          routesJSON: {
-            '(/)': {get: 'home#index'}
-          }
-          , collections: 'collections/'
-          , views: 'views/'
-          , controllers: 'controllers/'
-          , app: window.A
-          , start: false
-        })
-
-        sinon.spy(router2, 'render')
-        sinon.spy(router3, 'render')
-
-        router2.start(true)
-        router3.start(true)
-
-        expect(Backbone.History.started).to.be.true
-        expect(router2.render).to.not.have.been.called
-        expect(router3.render).to.have.been.calledOnce
-      })
-    })
-  })
-
-  describe('_setCollection', function(){
-
+  describe('#_setCollection', function(){
     it('creates a new A.Datas collection with data', function(){
       var collection
       expect(router._setCollection).to.exist
