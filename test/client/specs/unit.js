@@ -155,15 +155,82 @@ describe('Client router unit tests', function(){
 
       Backbone.history.loadUrl.restore()
     })
+
+    it('properly restarts after adding routes')
   })
 
-  it('can parse routes from json')
-  it('can parse routes from actions')
-  it('properly restarts after adding routes')
+  describe('#_addRoutes', function(){
+    it('can parse routes from json')
+  })
 
-  it('doesn\'t fetch the collection if fetch is set to false')
+  describe('#_parseRoutes', function(){
+    it('can parse routes from actions')
+  })
 
-  // TODO: move me to integration tests
+  describe('#render', function(){
+    var router
+
+    beforeEach(function(){
+      router = new Router(_.extend({start: false}, opts))
+    })
+
+    it('loads boostrap data on the initial route', function(){
+      var data = {boostrap: true}
+      window._bootstrapData = data
+
+      // just ensure that our condition for loading boostrapped data is in place
+      expect(A._initialRouteHasFired).to.be.undefined
+
+      sinon.spy(router, '_setCollection')
+      router.render('home', 'streets')
+      expect(router._setCollection).to.have.been.calledWithMatch('streets', data)
+
+      window._bootstrapData = void 0
+    })
+
+    it('bails on an already _rendered view', function(){
+      // get the view in to the Renders object
+      router.render('home')
+      sinon.spy(A.Renders['/'], 'render')
+      // render once to confirm that the method is called
+      router.render('home')
+      expect(A.Renders['/'].render).to.have.been.calledOnce
+      // mark as rendered and ensure render isn't called
+      A.Renders['/']._rendered = true
+      A.Renders['/'].render.reset()
+      router.render('home')
+      expect(A.Renders['/'].render).to.not.have.been.called
+    })
+
+    it('renders a view without collections', function(){
+      sinon.spy(router, '_fetchCollection')
+      sinon.spy(router, '_setCollection')
+      sinon.spy(router, '_setView')
+      expect(window._bootstrapData).to.be.undefined
+
+      router.render('home')
+      expect(router._fetchCollection).to.not.have.been.called
+      expect(router._setCollection).to.not.have.been.called
+      expect(router._setView).to.have.been.calledOnce
+    })
+
+    it('renders a view with a collection after fetching the collection when the `options.fetch` option is true', function(){
+      sinon.spy(router, '_fetchCollection')
+      sinon.spy(router, '_setView')
+      router.render('home', 'streets', {fetch: true})
+      expect(router._fetchCollection).to.have.been.calledOnce
+      expect(router._setView).to.have.been.calledOnce
+    })
+
+    it('renders a view with a collection without fetching the collection when `options.fetch` is false', function(){
+      sinon.spy(router, '_fetchCollection')
+      sinon.spy(router, '_setView')
+      router.render('home', 'streets', {fetch: false})
+      expect(router._fetchCollection).to.not.have.been.called
+      expect(router._setView).to.have.been.calledOnce
+    })
+  })
+
   describe('#_setCollection', function(){
     it('creates a new A.Datas collection with data', function(){
       var collection
