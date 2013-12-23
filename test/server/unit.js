@@ -102,7 +102,7 @@ describe('router', function(){
     })
   })
 
-  describe('getRequestUserJSON', function(){
+  describe('#getRequestUserJSON', function(){
     var fn = plugin.internals.getRequestUserJSON
 
     it('returns JSON if the request has a user object', function(){
@@ -127,7 +127,7 @@ describe('router', function(){
     })
   })
 
-  describe('parseControllerMethod', function(){
+  describe('#parseControllerMethod', function(){
     var fn = plugin.internals.parseControllerMethod
       , method = 'test'
       // mock controller
@@ -164,14 +164,14 @@ describe('router', function(){
     it('returns the collection if the method and model are undefined')
   })
 
-  describe('buildTemplate', function(){
+  describe('#buildTemplate', function(){
     it('calls the optionally passed render method')
     it('calls #render if no render method was set')
     it('calls render with a template')
     it('calls render with data')
   })
 
-  describe('render', function(){
+  describe('#render', function(){
     it('builds the template with the collection if it is present in app.collections')
     it('fetches data for the collection if the collection doesn\'t exist on the app')
     it('builds the template without a collection if none is defined')
@@ -180,7 +180,7 @@ describe('router', function(){
     it('calls res.end')
   })
 
-  describe('mountRoutes', function(){
+  describe('#mountRoutes', function(){
     it('attaches routes to the app router')
     it('creates a route that returns a 403 on optional permissions returning false')
     it('redirects if a 30* method is passed')

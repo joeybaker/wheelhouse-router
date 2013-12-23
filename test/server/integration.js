@@ -46,6 +46,7 @@ describe('router', function(){
 
     describe('/streets', function(){
       var url = 'http://localhost:' + port + '/streets'
+
       describe('/', function(){
         it('renders the street controller with the index action', function(done){
           request.get(url, function(err, res, body){
@@ -70,7 +71,7 @@ describe('router', function(){
         it('renders the street controller with the edit action', function(done){
           request.get(url + '/1/edit/', function(err, res, body){
             body.should.exist
-            body.indexOf('"view":"streets/edit"').should.not.equal(-1)
+            body.should.contain('"view":"streets/edit"')
             done()
           })
         })
