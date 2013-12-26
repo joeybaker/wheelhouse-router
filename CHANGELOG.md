@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2
+* fix 5** errors not logging a stack trace but all other errors did.
+* test cleanup
+* the app now has the `_initialRouteHasFired` boolean, which is set to `true` as soon as the first route matches. This might be useful for ignoring the first page load in Google Analytics.
+* fix options being overridden before being passed to `render`
+
 ## 0.5.1
 * split changelog into a separate file
 * bug fix for multiple routers not properly loading a new url
