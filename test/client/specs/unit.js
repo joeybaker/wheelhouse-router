@@ -241,6 +241,15 @@ describe('Client router unit tests', function(){
       expect(router.options.app.Datas.streets.length).to.equal(1)
     })
 
+    it('returns an empty array if passed nothing', function(){
+      var collection
+      expect(router._setCollection).to.exist
+      expect(router.options.app.Collections.streets).to.exist
+      // router.options.app.Datas.streets = null
+      collection = router._setCollection('streets', null)
+      expect(router.options.app.Datas.streets.length).to.equal(0)
+    })
+
     it('overwrites the collection data with any data passed to it', function(){
       var collection
       expect(router._setCollection).to.exist
