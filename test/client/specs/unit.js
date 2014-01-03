@@ -232,9 +232,14 @@ describe('Client router unit tests', function(){
   })
 
   describe('#_setCollection', function(){
+    beforeEach(function(){
+      router = new Router(_.extend({start: false}, opts))
+    })
+
     it('creates a new A.Datas collection with data', function(){
       var collection
       expect(router._setCollection).to.exist
+      router._setCollection('streets', null)
       expect(router.options.app.Collections.streets).to.exist
       // router.options.app.Datas.streets = null
       collection = router._setCollection('streets', [{id: 1}])
@@ -242,11 +247,12 @@ describe('Client router unit tests', function(){
     })
 
     it('returns an empty array if passed nothing', function(){
-      var collection
       expect(router._setCollection).to.exist
-      expect(router.options.app.Collections.streets).to.exist
-      // router.options.app.Datas.streets = null
-      collection = router._setCollection('streets', null)
+      router._setCollection('streets', null)
+      expect(router.options.app.Datas.streets.length).to.equal(0)
+      router._setCollection('streets', void 0)
+      expect(router.options.app.Datas.streets.length).to.equal(0)
+      router._setCollection('streets', [])
       expect(router.options.app.Datas.streets.length).to.equal(0)
     })
 
