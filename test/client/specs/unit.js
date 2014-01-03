@@ -217,6 +217,8 @@ describe('Client router unit tests', function(){
     it('renders a view with a collection after fetching the collection when the `options.fetch` option is true', function(){
       sinon.spy(router, '_fetchCollection')
       sinon.spy(router, '_setView')
+      A.Datas.streets = new Backbone.Collection()
+      sinon.stub(A.Datas.streets, 'fetch').yieldsTo('success', [])
       router.render('home', 'streets', {fetch: true})
       expect(router._fetchCollection).to.have.been.calledOnce
       expect(router._setView).to.have.been.calledOnce
