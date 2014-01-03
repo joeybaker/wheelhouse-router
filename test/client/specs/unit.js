@@ -217,6 +217,8 @@ describe('Client router unit tests', function(){
     it('renders a view with a collection after fetching the collection when the `options.fetch` option is true', function(){
       sinon.spy(router, '_fetchCollection')
       sinon.spy(router, '_setView')
+      A.Datas.streets = new Backbone.Collection()
+      sinon.stub(A.Datas.streets, 'fetch').yieldsTo('success', [])
       router.render('home', 'streets', {fetch: true})
       expect(router._fetchCollection).to.have.been.calledOnce
       expect(router._setView).to.have.been.calledOnce
@@ -232,13 +234,28 @@ describe('Client router unit tests', function(){
   })
 
   describe('#_setCollection', function(){
+    beforeEach(function(){
+      router = new Router(_.extend({start: false}, opts))
+    })
+
     it('creates a new A.Datas collection with data', function(){
       var collection
       expect(router._setCollection).to.exist
+      router._setCollection('streets', null)
       expect(router.options.app.Collections.streets).to.exist
       // router.options.app.Datas.streets = null
       collection = router._setCollection('streets', [{id: 1}])
       expect(router.options.app.Datas.streets.length).to.equal(1)
+    })
+
+    it('returns an empty array if passed nothing', function(){
+      expect(router._setCollection).to.exist
+      router._setCollection('streets', null)
+      expect(router.options.app.Datas.streets.length).to.equal(0)
+      router._setCollection('streets', void 0)
+      expect(router.options.app.Datas.streets.length).to.equal(0)
+      router._setCollection('streets', [])
+      expect(router.options.app.Datas.streets.length).to.equal(0)
     })
 
     it('overwrites the collection data with any data passed to it', function(){
