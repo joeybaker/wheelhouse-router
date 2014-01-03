@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.5.3
+* **fix bug** correct client router failing to fetch
+* now allowing boostrap data to be explicitly disabled in the controller by setting `boostrap: false`
+
 ## 0.5.2
 * fix 5** errors not logging a stack trace but all other errors did.
 * test cleanup

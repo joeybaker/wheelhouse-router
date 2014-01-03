@@ -225,6 +225,8 @@ You can hand JSON off to the template that will be used to bootstrap your collec
 
 If not defined, it will use the `model.toJSON()`, if that's not defined, it will use `collection.toJSON()`
 
+If set to `false`, no boostrap data will be set.
+
 _example is the same as the model example_
 
 ##### title
