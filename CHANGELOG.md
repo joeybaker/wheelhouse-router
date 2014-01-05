@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.4
+IE8 compatibility for the client router.
+
 ### 0.5.3
 * **fix bug** correct client router failing to fetch
 * now allowing boostrap data to be explicitly disabled in the controller by setting `boostrap: false`
