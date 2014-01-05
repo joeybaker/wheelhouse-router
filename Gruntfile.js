@@ -197,6 +197,13 @@ module.exports = function(grunt){
           , failOnError: true
         }
       }
+      , gitPullRebase: {
+        command: 'git pull --rebase origin master'
+        , options: {
+          stdout: true
+          , failOnError: true
+        }
+      }
       , npmPublish: {
         command: 'npm publish'
         , options: {
@@ -231,5 +238,15 @@ module.exports = function(grunt){
     else
       grunt.task.run(['browserify', 'connect:test', 'simplemocha', 'mocha'])
   })
-  grunt.registerTask('publish', ['shell:gitRequireCleanTree', 'jshint', 'shell:npmTest', 'bump:' + (grunt.option('bump') || 'patch'), 'shell:gitCommitPackage', 'shell:gitTag', 'shell:gitPush', 'shell:npmPublish'])
+  grunt.registerTask('publish', [
+    'shell:gitRequireCleanTree'
+    , 'shell:gitPullRebase'
+    , 'jshint'
+    , 'shell:npmTest'
+    , 'bump:' + (grunt.option('bump') || 'patch')
+    , 'shell:gitCommitPackage'
+    , 'shell:gitTag'
+    , 'shell:gitPush'
+    , 'shell:npmPublish'
+  ])
 }
