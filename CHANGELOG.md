@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.5
+Update publish command.
+
 ### 0.5.4
 IE8 compatibility for the client router.
 
