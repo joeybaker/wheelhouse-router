@@ -165,6 +165,8 @@ describe('router', function(){
   })
 
   describe('#buildTemplate', function(){
+    it('finds the title from a function')
+    it('finds the title from a string')
     it('calls the optionally passed render method')
     it('calls #render if no render method was set')
     it('calls render with a template')
@@ -207,4 +209,3 @@ describe('router', function(){
     app.server.close(done)
   })
 })
-
