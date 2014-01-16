@@ -230,7 +230,7 @@ If set to `false`, no boostrap data will be set.
 _example is the same as the model example_
 
 ##### title
-Specify the `<title>` attribute
+Specify the `<title>` attribute. Can be a string or a function. If a function, it will be passed the model if the `model` option is specified, else it will be passed the collection.
 
 ##### meta
 An object that will be used to fill out the `<meta>` tags

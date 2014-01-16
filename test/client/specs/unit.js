@@ -268,4 +268,50 @@ describe('Client router unit tests', function(){
       expect(collection.first().id).to.equal(1)
     })
   })
+
+  describe('#_setView', function(){
+    describe('sets document.title', function(){
+      var collection
+
+      beforeEach(function(){
+        router = new Router(_.extend({start: false}, opts))
+        sinon.stub(router, '_updateRender')
+        collection = new (Backbone.Collection.extend({
+          url: 'title/test'
+        }))()
+      })
+
+      it('uses a `title` function with a model', function(){
+        var model = new Backbone.Model()
+
+        router._setView('home', collection, {
+          title: function(m){
+            return m.cid
+          }
+          , model: model
+        })
+
+        expect(document.title).to.equal(model.cid)
+      })
+
+      it('uses a `title` function with a collection', function(){
+        router._setView('home', collection, {
+          title: function(c){
+            return c.url
+          }
+        })
+
+        expect(document.title).to.equal(collection.url)
+      })
+
+      it('uses a `title` string', function(){
+        var title = 'a title'
+        router._setView('home', collection, {
+          title: title
+        })
+
+        expect(document.title).to.equal(title)
+      })
+    })
+  })
 })
