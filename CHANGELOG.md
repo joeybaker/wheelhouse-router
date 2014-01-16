@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.8
+IE8 bug fix: url params now get passed to the view correctly
+
 ### 0.5.7
 * fix `title` option, now works
 * update server route logging to show user id, not user email (makes it slighly more generic anyway)
