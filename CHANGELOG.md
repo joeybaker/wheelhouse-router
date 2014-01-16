@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.5.6
+* fix `title` option, now works
+* update server route logging to show user id, not user email (makes it slighly more generic anyway)
+
 ### 0.5.5
 Update publish command.
 
