@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.9
+* client: fix `options.url` overriding colleciton url
+
 ### 0.5.8
 IE8 bug fix: url params now get passed to the view correctly
 
