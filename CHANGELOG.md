@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.11
+Server: router won't show an error page or set headers if the user has done it already. This is useful if you'd rather redirect then show an error page.
+
 ### 0.5.10
 Fix 0.5.9, actually don't override the collection url
 

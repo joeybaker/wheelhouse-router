@@ -1,5 +1,5 @@
 'use strict';
-/*global describe, it, before, after */
+/*global describe, it, before, after, beforeEach */
 
 var app = require('../fixtures/app')
   , plugin = require('../../index.js')
@@ -7,18 +7,22 @@ var app = require('../fixtures/app')
   , expect = chai.expect
   , sinon = require('sinon')
   , sinonChai = require('sinon-chai')
-  , request = {
-    req: {}
-    , res: {
-      end: function(){}
-      , writeHead: function(){}
-    }
-  }
+  , request
 
 chai.use(sinonChai)
 
 describe('router', function(){
   var port = app.config.get('port')
+
+  beforeEach(function(){
+    request = {
+      req: {}
+      , res: {
+        end: function(){}
+        , writeHead: function(){}
+      }
+    }
+  })
 
   before(function(done){
     app.options.log = {console: {silent: true}}
@@ -27,6 +31,20 @@ describe('router', function(){
 
   describe('#respondWithError', function(){
     var fn = plugin.internals.respondWithError
+
+    it('does nothing if the headers have already been sent', function(){
+      request.res.headerSent = true
+      sinon.spy(app.log, 'debug')
+      sinon.spy(app.log, 'warn')
+
+      fn.call(request)
+
+      expect(app.log.debug).to.have.been.calledOnce
+      expect(app.log.warn).to.not.have.been.called
+
+      app.log.debug.restore()
+      app.log.warn.restore()
+    })
 
     it('logs the stack trace if the error is 5**', function(){
       var status = 404
