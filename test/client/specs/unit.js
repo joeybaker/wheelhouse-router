@@ -133,7 +133,12 @@ describe('Client router unit tests', function(){
       })
     })
 
-    it('loads a newly added url if an additional router adds routes, history has already started, no routes matched previously, but a new one does.', function(){
+    it('loads a newly added url if'
+      + 'an additional router adds routes'
+      + ', history has already started'
+      + ', no routes matched previously'
+      + ', but a new one does.'
+    , function(){
       var r1, r2
       sinon.spy(Backbone.history, 'loadUrl')
 
@@ -214,22 +219,24 @@ describe('Client router unit tests', function(){
       expect(router._setView).to.have.been.calledOnce
     })
 
-    it('renders a view with a collection after fetching the collection when the `options.fetch` option is true', function(){
-      sinon.spy(router, '_fetchCollection')
-      sinon.spy(router, '_setView')
-      A.Datas.streets = new Backbone.Collection()
-      sinon.stub(A.Datas.streets, 'fetch').yieldsTo('success', [])
-      router.render('home', 'streets', {fetch: true})
-      expect(router._fetchCollection).to.have.been.calledOnce
-      expect(router._setView).to.have.been.calledOnce
-    })
+    describe('renders a view with a collection', function(){
+      it('after fetching the collection when the `options.fetch` option is true', function(){
+        sinon.spy(router, '_fetchCollection')
+        sinon.spy(router, '_setView')
+        A.Datas.streets = new Backbone.Collection()
+        sinon.stub(A.Datas.streets, 'fetch').yieldsTo('success', [])
+        router.render('home', 'streets', {fetch: true})
+        expect(router._fetchCollection).to.have.been.calledOnce
+        expect(router._setView).to.have.been.calledOnce
+      })
 
-    it('renders a view with a collection without fetching the collection when `options.fetch` is false', function(){
-      sinon.spy(router, '_fetchCollection')
-      sinon.spy(router, '_setView')
-      router.render('home', 'streets', {fetch: false})
-      expect(router._fetchCollection).to.not.have.been.called
-      expect(router._setView).to.have.been.calledOnce
+      it('without fetching the collection when `options.fetch` is false', function(){
+        sinon.spy(router, '_fetchCollection')
+        sinon.spy(router, '_setView')
+        router.render('home', 'streets', {fetch: false})
+        expect(router._fetchCollection).to.not.have.been.called
+        expect(router._setView).to.have.been.calledOnce
+      })
     })
   })
 

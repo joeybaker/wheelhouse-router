@@ -51,7 +51,8 @@
     "browserify": "~3.2",
     "sinon": "~1.7.3",
     "sinon-chai": "~2.4.0",
-    "matchdep": "~0.3.0"
+    "matchdep": "~0.3.0",
+    "grunt-jscs-checker": "~0.3.2"
   },
   "peerDependencies": {
     "flatiron": "~0.3"

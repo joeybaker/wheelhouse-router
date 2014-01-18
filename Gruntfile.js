@@ -22,6 +22,10 @@ module.exports = function(grunt){
         jshintrc: '.jshintrc'
       }
     }
+    , jscs: {
+      options: {}
+      , all: '<%= jshint.all %>'
+    }
     , bump: {
       patch: {
         options: {
@@ -111,10 +115,10 @@ module.exports = function(grunt){
         options: {
           port: '<%= config.port + 1 %>'
           // , keepalive: true
-          , middleware: function(connect) {
+          , middleware: function(connect){
             return [
               connect.static(path.join(__dirname, '.'))
-              , function(req, res) {
+              , function(req, res){
                 var Handlebars = require('handlebars')
                   , specs = []
                   , template
@@ -124,7 +128,7 @@ module.exports = function(grunt){
 
                 // console.log(req.url)
                 // proxy through calls to the api controller so that the test server can get data
-                if (req.url.indexOf('/api') > -1) {
+                if (req.url.indexOf('/api') > -1){
 
                   res.end(JSON.stringify([{name: 'street1', id: 1}, {name: 'street 2', id: 2}]))
                 }
@@ -235,6 +239,7 @@ module.exports = function(grunt){
     'shell:gitRequireCleanTree'
     , 'shell:gitPullRebase'
     , 'jshint'
+    , 'jscs'
     , 'shell:npmTest'
     , 'bump:' + (grunt.option('bump') || 'patch')
     , 'shell:gitCommitPackage'

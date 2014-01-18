@@ -21,7 +21,7 @@ describe('router', function(){
     it('modifies the output', function(done){
       request.get('http://localhost:' + port, function(err, res, body){
         body.should.exist
-        body.indexOf('api value').should.not.equal(-1)
+        body.should.contain('api value')
         done()
       })
     })
@@ -39,7 +39,7 @@ describe('router', function(){
     it('/ renders the home controller', function(done){
       request.get('http://localhost:' + port, function(err, res, body){
         body.should.exist
-        body.indexOf('"view":"home"').should.not.equal(-1)
+        body.should.contain('"view":"home"')
         done()
       })
     })
@@ -51,7 +51,7 @@ describe('router', function(){
         it('renders the street controller with the index action', function(done){
           request.get(url, function(err, res, body){
             body.should.exist
-            body.indexOf('"view":"streets/index"').should.not.equal(-1)
+            body.should.contain('"view":"streets/index"')
             done()
           })
         })
@@ -61,7 +61,7 @@ describe('router', function(){
         it('renders the street controller with the detail action', function(done){
           request.get(url + '/1', function(err, res, body){
             body.should.exist
-            body.indexOf('"view":"streets/detail"').should.not.equal(-1)
+            body.should.contain('"view":"streets/detail"')
             done()
           })
         })
@@ -126,4 +126,3 @@ describe('router', function(){
     app.server.close(done)
   })
 })
-
