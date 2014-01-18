@@ -184,7 +184,7 @@ module.exports = function(grunt){
         }
       }
       , gitCommitPackage: {
-        command: 'git commit --amend -i package.json --reuse-message HEAD'
+        command: 'git commit -i -s package.json -m"v<%= grunt.file.readJSON("package.json").version %>"'
         , options: {
           stdout: true
           , failOnError: true
@@ -221,14 +221,7 @@ module.exports = function(grunt){
     }
   })
 
-  grunt.loadNpmTasks('grunt-contrib-connect')
-  grunt.loadNpmTasks('grunt-contrib-jshint')
-  grunt.loadNpmTasks('grunt-simple-mocha')
-  grunt.loadNpmTasks('grunt-browserify')
-  grunt.loadNpmTasks('grunt-notify')
-  grunt.loadNpmTasks('grunt-mocha')
-  grunt.loadNpmTasks('grunt-shell')
-  grunt.loadNpmTasks('grunt-bumpx')
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
 
   grunt.registerTask('test', function(){
     if (grunt.option('client'))

@@ -50,7 +50,8 @@
     "grunt-browserify": "~1.2.11",
     "browserify": "~2",
     "sinon": "~1.7.3",
-    "sinon-chai": "~2.4.0"
+    "sinon-chai": "~2.4.0",
+    "matchdep": "~0.3.0"
   },
   "peerDependencies": {
     "flatiron": "~0.3"
