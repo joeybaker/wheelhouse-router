@@ -1,7 +1,10 @@
 # Changelog
 
+### 0.5.10
+Fix 0.5.9, actually don't override the collection url
+
 ### 0.5.9
-* client: fix `options.url` overriding colleciton url
+* client: fix `options.url` overriding collection url
 
 ### 0.5.8
 IE8 bug fix: url params now get passed to the view correctly
