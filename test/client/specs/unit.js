@@ -5,6 +5,8 @@ var router = window.router
   , sinon = window.sinon
   , Router = window.Router
   , Backbone = window.Backbone
+  , should = window.chai.should()
+  , $ = window.$
   , _ = window._
   , A
   , opts
@@ -273,6 +275,68 @@ describe('Client router unit tests', function(){
       collection = router._setCollection('streets', [{id: 1}, {id: 2}])
       expect(collection.length).to.equal(2)
       expect(collection.first().id).to.equal(1)
+    })
+  })
+
+  describe('#_fetchCollection', function(){
+    var collection
+
+    beforeEach(function(){
+      router = new Router(_.extend({start: false}, opts))
+      sinon.stub($, 'ajax')
+      collection = new (Backbone.Collection.extend({
+        url: 'fetch/test'
+      }))()
+    })
+
+    afterEach(function(){
+      $.ajax.restore()
+    })
+
+    it('doesn\'t re-fetch a collection that has models', function(){
+      collection.add({})
+      sinon.spy(collection, 'fetch')
+      router._fetchCollection(collection)
+      collection.fetch.should.not.have.been.called
+    })
+
+    it('logs to console.error on a fetch error', function(){
+      sinon.stub(console, 'error')
+
+      $.ajax.yieldsTo('error')
+      router._fetchCollection(collection)
+
+      console.error.restore()
+    })
+
+    it('calls the callback on success', function(){
+      var cb = sinon.spy()
+
+      $.ajax.yieldsTo('success')
+      router._fetchCollection(collection, cb)
+      cb.should.have.been.calledOnce
+    })
+
+    it('calls a noop on success with no callback', function(){
+      should.not.exist(router._fetchCollection(collection, null))
+    })
+
+    it('fetches from the collection url', function(){
+      router._fetchCollection(collection)
+      $.ajax.should.have.been.calledWithMatch({url: collection.url})
+    })
+
+    it('it fetches from a different url if specified in options', function(){
+      var url = '/fetch/test/modified'
+      router._fetchCollection(collection, null, {options: {url: url}})
+      $.ajax.should.have.been.calledWithMatch({url: url})
+    })
+
+    it('doesn\'t overwrite the collection url', function(){
+      var url = '/fetch/test/modified'
+      router._fetchCollection(collection, null, {options: {url: url}})
+      $.ajax.should.have.been.calledWithMatch({url: url})
+      collection.url.should.equal('fetch/test')
     })
   })
 
