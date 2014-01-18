@@ -91,22 +91,22 @@ describe('router', function(){
     it('responds with the error template', function(){
       var status = 404
       plugin.internals.options.err[status] = '404'
-      sinon.spy(plugin.internals.options, 'render')
+      sinon.spy(plugin.internals, 'buildTemplate')
       sinon.spy(request.res, 'end')
 
       fn.call(request, status)
 
-      expect(plugin.internals.options.render).to.have.been.calledOnce
+      expect(plugin.internals.buildTemplate).to.have.been.calledOnce
       expect(request.res.end).to.have.been.calledOnce
 
-      plugin.internals.options.render.restore()
+      plugin.internals.buildTemplate.restore()
       delete plugin.internals.options.err[status]
       request.res.end.restore()
     })
 
     it('responds with the error code if no template is specified', function(){
       var status = 404
-      sinon.spy(plugin.internals.options, 'render')
+      sinon.spy(plugin.internals, 'buildTemplate')
       sinon.spy(request.res, 'end')
 
       expect(plugin.internals.options.err[status]).to.not.exist
@@ -115,7 +115,7 @@ describe('router', function(){
 
       expect(request.res.end).to.have.been.calledOnce
 
-      plugin.internals.options.render.restore()
+      plugin.internals.buildTemplate.restore()
       request.res.end.restore()
     })
   })

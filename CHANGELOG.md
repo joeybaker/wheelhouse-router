@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.12
+Server: error templates go through the same build process as regular templates now.
+
 ### 0.5.11
 Server: router won't show an error page or set headers if the user has done it already. This is useful if you'd rather redirect then show an error page.
 
