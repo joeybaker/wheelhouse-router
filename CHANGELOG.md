@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.5.13
+Client: hacky fix to ensure the modified URL of a fetch doesn't overwrite model urls.
+
 ### 0.5.12
 Server: error templates go through the same build process as regular templates now.
 
