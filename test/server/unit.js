@@ -188,6 +188,7 @@ describe('router', function(){
     it('calls the optionally passed render method')
     it('calls #render if no render method was set')
     it('calls render with a template')
+    it('calls render with the request context')
     it('calls render with data')
   })
 

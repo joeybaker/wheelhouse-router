@@ -1,4 +1,6 @@
 # Changelog
+### 0.5.14
+Server: the render function is called with the request context.
 
 ### 0.5.13
 Client: hacky fix to ensure the modified URL of a fetch doesn't overwrite model urls.
