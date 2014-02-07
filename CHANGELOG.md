@@ -1,4 +1,7 @@
 # Changelog
+### 0.5.15
+Client: Ensure the current render is fully removed when changing renders
+
 ### 0.5.14
 Server: the render function is called with the request context.
 

@@ -385,4 +385,36 @@ describe('Client router unit tests', function(){
       })
     })
   })
+
+  describe('#_updateRender', function(){
+    var view1, view2
+
+    beforeEach(function(){
+      router = new Router(_.extend({start: false}, opts))
+      view1 = {
+        undelegateEvents: sinon.stub()
+        , stopListening: sinon.stub()
+        , trigger: sinon.stub()
+        , _rendered: false
+        , cid: 1
+      }
+      view2 = _.clone(view1)
+      view2.cid = 2
+    })
+
+    it('removes the current render if it is different from the new render', function(){
+      var app = router.options.app
+      app.Renders.view1 = view1
+      app.Renders.view2 = view2
+      app._currentRender = view1
+      view1._rendered = true
+
+      router._updateRender('view2')
+
+      view1.undelegateEvents.should.have.been.calledOnce
+      view1.stopListening.should.have.been.calledOnce
+      view1.trigger.should.have.been.calledOnce
+      view1._rendered.should.be.false
+    })
+  })
 })
