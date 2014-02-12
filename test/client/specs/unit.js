@@ -1,4 +1,4 @@
-/*global expect, describe, it, beforeEach, afterEach */
+/*global describe, it, beforeEach, afterEach */
 'use strict';
 
 var router = window.router
@@ -6,6 +6,7 @@ var router = window.router
   , Router = window.Router
   , Backbone = window.Backbone
   , should = window.chai.should()
+  , expect = window.chai.expect
   , $ = window.$
   , _ = window._
   , A

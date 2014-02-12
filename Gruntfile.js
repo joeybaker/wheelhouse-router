@@ -51,22 +51,26 @@ module.exports = function(grunt){
         , src: '<%= bump.patch.src %>'
       }
     }
-    , browserify: {
-      test: {
-        src: './test/fixtures/main.js'
-        , dest: './test/fixtures/main.compiled.js'
-        , options: {
-          debug: true
-          , shim: {
-            jquery: {
-              path: './node_modules/jquery-browser/lib/jquery.js'
-              , exports: '$'
-            }
+    , watchify: {
+      options: {
+        callback: function(b){
+          var aliasMap
+            , aliasMappings
+
+          aliasMap = function aliasMap(alias){
+            alias.expand = true; // so the user doesn't have to specify
+            grunt.file.expandMapping(alias.src, alias.dest, alias)
+              .forEach(function(file){
+                var expose = file.dest.substr(0, file.dest.lastIndexOf('.'))
+                b.require(path.resolve(file.src[0]), {expose: expose})
+              })
           }
-          , alias: [
-            './node_modules/handlebars/dist/handlebars.runtime.js:handlebars'
-          ]
-          , aliasMappings: [
+
+          b.require('handlebars/dist/handlebars.runtime.js', {
+            expose: 'handlebars'
+          })
+
+          aliasMappings = [
             {
               cwd: './test/fixtures/collections'
               , src: ['**/*.js']
@@ -88,7 +92,18 @@ module.exports = function(grunt){
               , dest: 'views'
             }
           ]
+
+          aliasMappings.forEach(function(alias){
+            aliasMap(alias)
+          })
+
+          return b
         }
+        , debug: true
+      }
+      , test: {
+        src: './test/fixtures/main.js'
+        , dest: './test/fixtures/main.compiled.js'
       }
     }
     , simplemocha: {
@@ -101,50 +116,22 @@ module.exports = function(grunt){
         src: ['test/server/**/*.js']
       }
     }
-    , mocha: {
-      all: {
-        options: {
-          run: false
-          , urls: ['http://localhost:<%= connect.test.options.port %>/']
-          , log: true
+    , karma: {
+      options: {
+        configFile: 'karma.conf.js'
+        , runnerPort: 9021
+        , mocha: {
+          ui: 'bdd'
         }
       }
-    }
-    , connect: {
-      test: {
-        options: {
-          port: '<%= config.port + 1 %>'
-          // , keepalive: true
-          , middleware: function(connect){
-            return [
-              connect.static(path.join(__dirname, '.'))
-              , function(req, res){
-                var Handlebars = require('handlebars')
-                  , specs = []
-                  , template
-
-                // TODO: match changed files against specs so that we're sure to only run necessary tests
-                // console.log(grunt.regarde.changed)
-
-                // console.log(req.url)
-                // proxy through calls to the api controller so that the test server can get data
-                if (req.url.indexOf('/api') > -1){
-
-                  res.end(JSON.stringify([{name: 'street1', id: 1}, {name: 'street 2', id: 2}]))
-                }
-                // always just run the clientside tests
-                else {
-                  grunt.file.recurse('./test/client/specs/', function(abspath){
-                    if (/\.js$/.test(abspath)) specs.push(abspath)
-                  })
-
-                  template = Handlebars.compile(grunt.file.read('test/client/test.hbs'))
-                  res.end(template({specs: specs}))
-                }
-              }
-            ]
-          }
-        }
+      , watch: {
+        singleRun: false
+        , autoWatch: true
+      }
+      , publish: {
+        singleRun: true
+        , autoWatch: false
+        , browsers: ['Firefox', 'Safari', 'Chrome']
       }
     }
     , shell: {
@@ -222,19 +209,28 @@ module.exports = function(grunt){
           , failOnError: true
         }
       }
+      , nodemonServerTest: {
+        command: 'nodemon -x mocha -w lib -w test/server -- test/server'
+        , options: {
+          stdout: true
+          , stderr: true
+          , failOnError: false
+        }
+      }
     }
   })
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
 
   grunt.registerTask('test', function(){
-    if (grunt.option('client'))
-      grunt.task.run(['browserify', 'connect:test', 'mocha'])
-    else if (grunt.option('server'))
-      grunt.task.run(['simplemocha'])
+    if (this.args.indexOf('client') > -1)
+      grunt.task.run(['watchify', 'karma:' + (grunt.option('watch') ? 'watch' : 'publish')])
+    else if (this.args.indexOf('server') > -1)
+      grunt.task.run([grunt.option('watch') ? 'shell:nodemonServerTest' : 'simplemocha'])
     else
-      grunt.task.run(['browserify', 'connect:test', 'simplemocha', 'mocha'])
+      grunt.task.run(['watchify', 'simplemocha', 'karma:publish'])
   })
+
   grunt.registerTask('publish', [
     'shell:gitRequireCleanTree'
     , 'shell:gitPullRebase'

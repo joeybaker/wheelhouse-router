@@ -1,4 +1,3 @@
-/*global mocha*/
 'use strict';
 
 var Backbone
@@ -23,7 +22,3 @@ window.killBackbone = function(){
 window.chai.use(window.sinonChai)
 
 window.A = {}
-
-setTimeout(function(){
-  mocha.run()
-})
