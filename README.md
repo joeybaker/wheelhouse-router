@@ -100,6 +100,8 @@ A backbone collection or model to hand off to the view. This is overriden by the
 var Router = require('wheelhouse-router')
   , A = {}
 
+window._user = {id: 2} // optional. Specify a JSON object; probably comes from the server. This should be a whitelisted set of user data that the router might need. Will be avaliable in the client router as `this.req.user` in order to map to the server API
+
   A.Router = new Router({
     routesJSON: require('./routes.json')
     , collections: 'collections/'
@@ -151,7 +153,6 @@ A JSON file that defines the routes.
 * Routes are keys, the values are objects that contain keys of methods and values that are strings of the controller and action to call.
 * Methods are the standard HTTP methods: get, post, put, delete
 * actions are in the format of "controller#action", much like the Rails style router. If an action is not specified, it will default to the method.
-
 
 Only GET routes are used client side.
 
@@ -258,6 +259,16 @@ return {
 
 module.exports = {
   action: function(id){ // if the route has arguments on it, they get passed in here.
+    // redirect is avaliable on both server and client
+    // the path argument is used by both
+    // the status code is only used on the server
+    // the options argument maps to Backbone.Router.navigate options. `trigger` is true by default
+    if (!id) this.res.redirect('/path', 301, {trigger: false})
+
+    // available on both the client if you've specified `window._user`
+    // avaialbe on the server if you've enabled it
+    this.req.user
+
     return {
       view: 'viewName'
       , template: 'templateName' // optional, overrides the `view` attr
