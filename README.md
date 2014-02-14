@@ -74,6 +74,23 @@ If you prefer, you can specify much of the config in a flatiron config.json file
 }
 ```
 
+#### `app.router.render(reqObject, options, collection|model)`
+This method gets attached to the main app router object. The rendered view gets saved in `router.Renders`. When a new router is triggered, the views events are automatically destoyed and a `remove` event is triggered on the view.
+
+##### `reqObject`
+When called from within a flatiron route: `this`
+
+##### `options`
+An object that can contain:
+* data: data to pass to the view
+* bootstrap: data to pass to the layout for boostrapping
+* title: the title of the page
+* meta: object for the page metadata
+
+See below for more info.
+
+##### `collection|model`
+A backbone collection or model to hand off to the view. This is overriden by the data object, or passed off to data if data is a function.
 
 ### Client JS
 ```js
@@ -90,7 +107,7 @@ var Router = require('wheelhouse-router')
     , controllers: 'controllers/'
     , app: A
     , pushState: true
-    , start: true // automatically start the router. If set to false, you'll have manually call router._start()
+    , start: true // automatically start the router. If set to false, you'll have manually call router.start()
   })
 
   // if you've set the `start` option to true call `start` to kick things off
@@ -111,24 +128,6 @@ You'll be able to access you raw and compiled Backbone objects attached to your 
 * `router.app.Datas`: Backbone collections with data (e.g. `A.Datas.streets.fetch()`)
 * `router.app.Controllers`: Wheelhouse controllers. Probably not that useful external to the router.
 * `router.app._initialRouteHasFired` tracks if the initial route has passed or not. Used internally to figure out if the boostrap data should load. Could be used by the user to tell analytics tracking that the initial page load should be tracked differently than subsequent, pushState, page loads.
-
-### `app.router.render(reqObject, options, collection|model)`
-This method gets attached to the main app router object. The rendered view gets saved in `router.Renders`. When a new router is triggered, the views events are automatically destoyed and a `remove` event is triggered on the view.
-
-#### `reqObject`
-When called from within a flatiron route: `this`
-
-#### `options`
-An object that can contain:
-* data: data to pass to the view
-* bootstrap: data to pass to the layout for boostrapping
-* title: the title of the page
-* meta: object for the page metadata
-
-See below for more info.
-
-#### `collection|model`
-A backbone collection or model to hand off to the view. This is overriden by the data object, or passed off to data if data is a function.
 
 ### `Backbone.history.urlMatch()`
 Backbone oddly doesn't have a way of detecting if it's matched a route or not. This is a patch that returns a boolean. True if the current route is in the routes tables (across all routers).
@@ -267,10 +266,12 @@ module.exports = {
       , meta: {
         description: 'A meta description'
       }
-      , data: function(collection){ // data is used to reduce the collection down, you should return JSON for your templates
+      // data is used to reduce the collection down, you should return JSON for your templates
+      // this only works server-side
+      , data: function(collection){
         return collection.findWhere({id: id}).toJSON()
       }
-      , bootstrap: function(collection){ // give backbone some initial data. Specify {{}}
+      , bootstrap: function(collection){ // give backbone some initial data.
         return collection.toJSON()
       }
       , model: function(collection){
