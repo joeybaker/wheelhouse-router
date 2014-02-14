@@ -418,4 +418,28 @@ describe('Client router unit tests', function(){
       view1._rendered.should.be.false
     })
   })
+
+  describe.only('controllers', function(){
+    describe('context is similar to the server context', function(){
+      var router
+        , controller
+
+      beforeEach(function(){
+        router = new Router(_.extend({start: false}, opts))
+        router.start(true)
+        controller = sinon.spy(require('controllers/home'), 'index')
+      })
+
+      afterEach(function(){
+        controller.restore()
+        window.killBackbone()
+      })
+
+      it('is called on the router\'s _ctx property', function(){
+        router.navigate('/', {trigger: true})
+        controller.should.have.been.calledOnce
+        controller.should.have.been.calledOn(router._ctx)
+      })
+    })
+  })
 })

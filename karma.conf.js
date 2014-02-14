@@ -7,7 +7,7 @@ module.exports = function(config){
     // base path, that will be used to resolve files and exclude
     basePath: ''
     // frameworks to use
-    , frameworks: ['mocha', 'chai']
+    , frameworks: ['mocha']
     // list of files / patterns to load in the browser
     , files: [
       'node_modules/mocha/mocha.js'
@@ -19,7 +19,7 @@ module.exports = function(config){
     , exclude: []
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    , reporters: ['mocha']
+    , reporters: ['dots']
     // web server port
     , port: 9876
     // enable / disable colors in the output (reporters and logs)

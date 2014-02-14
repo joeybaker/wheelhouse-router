@@ -1,4 +1,9 @@
 # Changelog
+### 0.6.0
+* migrated client tests to karma and watchify. now with moar speed!
+* client: fixed a bug where `_addRoutes` wouldn't render
+* client: no longer reserving certain action names
+
 ### 0.5.15
 Client: Ensure the current render is fully removed when changing renders
 
