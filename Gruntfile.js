@@ -231,16 +231,21 @@ module.exports = function(grunt){
       grunt.task.run(['watchify', 'simplemocha', 'karma:publish'])
   })
 
-  grunt.registerTask('publish', [
-    'shell:gitRequireCleanTree'
-    , 'shell:gitPullRebase'
-    , 'jshint'
-    , 'jscs'
-    , 'shell:npmTest'
-    , 'bump:' + (grunt.option('bump') || 'patch')
-    , 'shell:gitCommitPackage'
-    , 'shell:gitTag'
-    , 'shell:gitPush'
-    , 'shell:npmPublish'
-  ])
+  grunt.registerTask('publish', 'create a tag and publish to npm', function(){
+    var bump = (grunt.option('bump') || 'patch')
+    grunt.log.writeln(('Publishing a ' + bump + ' version').yellow)
+
+    grunt.task.run([
+      'shell:gitRequireCleanTree'
+      , 'shell:gitPullRebase'
+      , 'jshint'
+      , 'jscs'
+      , 'shell:npmTest'
+      , 'bump:' + bump
+      , 'shell:gitCommitPackage'
+      , 'shell:gitTag'
+      , 'shell:gitPush'
+      , 'shell:npmPublish'
+    ])
+  })
 }
