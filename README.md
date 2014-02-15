@@ -110,6 +110,10 @@ window._user = {id: 2} // optional. Specify a JSON object; probably comes from t
     , app: A
     , pushState: true
     , start: true // automatically start the router. If set to false, you'll have manually call router.start()
+    , user: {
+      model: require('path/to/userModel/to/require')
+      , key: '_user' // will look at window._user for the user data
+    }
   })
 
   // if you've set the `start` option to true call `start` to kick things off

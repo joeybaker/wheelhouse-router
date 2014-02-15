@@ -249,4 +249,47 @@ describe('Client router: integration tests:', function(){
     })
   })
 
+  describe('controllers', function(){
+    describe('context is similar to the server context', function(){
+      var router
+        , action
+
+      before(function(){
+        window.history.pushState({}, 'title', '/not')
+      })
+
+      beforeEach(function(){
+        window._user = {id: 1}
+        router = new Router(_.extend({start: false}, opts))
+        router.start(true)
+        action = sinon.spy(require('controllers/home'), 'index')
+        router.navigate('/', {trigger: true})
+      })
+
+      afterEach(function(){
+        action.restore()
+        router.navigate('/not')
+        window.killBackbone()
+      })
+
+      it('has the router\'s _ctx property', function(){
+        action.should.have.been.calledOnce
+        action.should.have.been.calledOn(router._getCtx())
+      })
+
+      it('has `req.user`', function(){
+        action.should.have.been.calledOnce
+        action.thisValues[0].should.include.keys('req')
+        action.thisValues[0].req.should.include.keys('user')
+        action.thisValues[0].req.user.should.deep.equal(window._user)
+      })
+
+      it('has `res.redirect`', function(){
+        action.should.have.been.calledOnce
+        action.thisValues[0].should.include.keys('res')
+        action.thisValues[0].res.should.include.keys('redirect')
+      })
+    })
+  })
+
 })

@@ -1,4 +1,4 @@
-/*global describe, it, beforeEach, afterEach */
+/*global describe, it, beforeEach, afterEach, after */
 'use strict';
 
 var router = window.router
@@ -14,9 +14,8 @@ var router = window.router
 
 describe('Client router unit tests', function(){
   beforeEach(function(done){
-    window.killBackbone()
-
     // reset the app
+    window.killBackbone()
     A = {}
     opts = {
       routesJSON: {
@@ -29,6 +28,10 @@ describe('Client router unit tests', function(){
     _.defer(done)
   })
 
+  afterEach(function(){
+    window.killBackbone()
+  })
+
   describe('#initialize', function(){
     it('creates a cid', function(){
       var r = new Router(opts)
@@ -38,20 +41,24 @@ describe('Client router unit tests', function(){
 
   describe('#start', function(){
     beforeEach(function(){
+      window.killBackbone()
+      window.history.pushState({}, 'title', '/')
       sinon.spy(Backbone.history, 'start')
     })
 
     afterEach(function(){
+      window.history.pushState({}, 'title', '/not')
       Backbone.history.start.restore()
     })
 
     it('starts async', function(done){
       var r = new Router(opts)
       expect(r._started).to.be.false
+      expect(Backbone.History.started).to.be.false
 
       _.defer(function(){
-        expect(r._started).to.be.true
         expect(Backbone.history.start).to.have.been.calledOnce
+        expect(r._started).to.be.true
         done()
       })
     })
@@ -395,26 +402,71 @@ describe('Client router unit tests', function(){
     })
   })
 
-  describe.only('controllers', function(){
-    describe('context is similar to the server context', function(){
-      var router
-        , controller
+  describe('#_getCtx', function(){
+    var router
+      , fn
+      , ctx
 
-      beforeEach(function(){
-        router = new Router(_.extend({start: false}, opts))
-        router.start(true)
-        controller = sinon.spy(require('controllers/home'), 'index')
+    beforeEach(function(){
+      window._user = {id: 1}
+      window.history.pushState({}, 'title', '/not')
+      router = new Router(_.extend({start: false}, opts))
+      fn = router._getCtx
+      ctx = fn.call(router)
+    })
+
+    after(function(){
+      window.history.pushState({}, 'title', '/')
+    })
+
+    describe('#res', function(){
+      describe('#redirect', function(){
+        it('should exist', function(){
+          should.exist(ctx.res)
+          should.exist(ctx.res.redirect)
+          ctx.res.redirect.should.be.a.function
+        })
+
+        it('navigates', function(){
+          router.start(true)
+          ctx.res.redirect('/').should.not.be.false
+          window.location.pathname.should.equal('/')
+        })
       })
+    })
 
-      afterEach(function(){
-        controller.restore()
-        window.killBackbone()
-      })
+    describe('#req', function(){
+      describe('#user', function(){
+        it('exists', function(){
+          should.exist(ctx.req.user)
+        })
 
-      it('is called on the router\'s _ctx property', function(){
-        router.navigate('/', {trigger: true})
-        controller.should.have.been.calledOnce
-        controller.should.have.been.calledOn(router._ctx)
+        it('is a model if defined in options', function(){
+          var Model = Backbone.Model.extend({
+            custom: true
+          })
+
+          router.options.user = {
+            model: Model
+          }
+          ctx = router._getCtx.call(router)
+
+          ctx.req.user.should.be.an.instanceof(Model)
+        })
+
+        it('uses the default key to find the data', function(){
+          ctx.req.user.should.deep.equal(window._user)
+        })
+
+        it('uses the key from options to find the data', function(){
+          router.options.user = {
+            key: 'otherUser'
+          }
+          window.otherUser = {key: 'otherUser'}
+          ctx = router._getCtx.call(router)
+
+          ctx.req.user.should.deep.equal(window.otherUser)
+        })
       })
     })
   })
