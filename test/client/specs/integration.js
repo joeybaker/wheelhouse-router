@@ -3,7 +3,9 @@
 
 var $ = window.$
   , sinon = window.sinon
-  , A = {}
+  , Router = window.Router
+  , A
+  , opts
   , router
 
 describe('Client router: integration tests:', function(){
@@ -11,15 +13,22 @@ describe('Client router: integration tests:', function(){
   beforeEach(function(done){
     A = {}
 
-    if (!$.ajax.restore)
-    sinon.stub($, 'ajax').yieldsTo('success', [[{'name': 'street1', 'id': 1}, {'name': 'street 2', 'id': 2}]])
+    opts = {
+      routesJSON: {
+        '(/)': {get: 'home#index'}
+      }
+      , app: A
+    }
+
+    if (!$.ajax.restore){
+      sinon.stub($, 'ajax').yieldsTo('success', [[{'name': 'street1', 'id': 1}, {'name': 'street 2', 'id': 2}]])
+    }
+
     _.defer(done)
   })
 
-  afterEach(function(done){
-    if ($.ajax.restore)
-    $.ajax.restore()
-    done()
+  afterEach(function(){
+    if ($.ajax.restore) $.ajax.restore()
   })
 
   describe('initialization', function(){
@@ -61,6 +70,30 @@ describe('Client router: integration tests:', function(){
         expect(collection.length).to.be.above(0)
 
         done()
+      })
+    })
+  })
+
+  describe('options', function(){
+    describe('start', function(){
+      it('does not start History when set to `false`', function(done){
+        var r = new Router(_.extend({
+          start: false
+        }, opts))
+
+        _.defer(function(){
+          expect(r._started).to.be.false
+          done()
+        })
+      })
+
+      it('starts Backbone.history when not set', function(done){
+        var r = new Router(opts)
+        _.defer(function(){
+          expect(Backbone.History.started).to.be.true
+          expect(r._started).to.be.true
+          done()
+        })
       })
     })
   })

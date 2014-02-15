@@ -36,30 +36,6 @@ describe('Client router unit tests', function(){
     })
   })
 
-  describe('options', function(){
-    describe('start', function(){
-      it('does not start History when set to `false`', function(done){
-        var r = new Router(_.extend({
-          start: false
-        }, opts))
-
-        _.defer(function(){
-          expect(r._started).to.be.false
-          done()
-        })
-      })
-
-      it('starts Backbone.history when not set', function(done){
-        var r = new Router(opts)
-        _.defer(function(){
-          expect(Backbone.History.started).to.be.true
-          expect(r._started).to.be.true
-          done()
-        })
-      })
-    })
-  })
-
   describe('#start', function(){
     beforeEach(function(){
       sinon.spy(Backbone.history, 'start')
