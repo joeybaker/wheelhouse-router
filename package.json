@@ -36,16 +36,13 @@
     "grunt-bumpx": "~0.2.0",
     "grunt-notify": "~0.2.17",
     "grunt-contrib-jshint": "~0.8.0",
-    "chai": "~1.8",
+    "chai": "~1.9.0",
     "mocha": "~1.17",
     "grunt-simple-mocha": "~0.4",
     "union": "~0.3",
     "grunt-shell": "~0.6",
     "request": "~2.33.0",
-    "handlebars": "~1.3.0",
-    "grunt-browserify": "~1.3.0",
-    "browserify": "~3.24",
-    "sinon": "~1.7.3",
+    "sinon": "~1.8.2",
     "sinon-chai": "~2.5.0",
     "matchdep": "~0.3.0",
     "grunt-jscs-checker": "~0.3.2",
@@ -59,7 +56,8 @@
     "karma-mocha": "~0.1.1",
     "grunt-watchify": "~0.1.0",
     "jquery": "~1.11.0",
-    "karma-safari-launcher": "~0.1.1"
+    "karma-safari-launcher": "~0.1.1",
+    "handlebars": "~2.0.0-alpha.1"
   },
   "peerDependencies": {
     "flatiron": "~0.3"
