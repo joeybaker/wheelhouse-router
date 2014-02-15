@@ -27,29 +27,10 @@ module.exports = function(grunt){
       , all: '<%= jshint.all %>'
     }
     , bump: {
-      patch: {
-        options: {
-          part: 'patch'
-          , tabSize: 2
-        }
-        , src: [
-          'package.json'
-        ]
+      options: {
+        tabSize: 2
       }
-      , minor: {
-        options: {
-          part: 'minor'
-          , tabSize: 2
-        }
-        , src: '<%= bump.patch.src %>'
-      }
-      , major: {
-        options: {
-          part: 'major'
-          , tabSize: 2
-        }
-        , src: '<%= bump.patch.src %>'
-      }
+      , files: ['package.json']
     }
     , watchify: {
       options: {
@@ -233,6 +214,7 @@ module.exports = function(grunt){
 
   grunt.registerTask('publish', 'create a tag and publish to npm', function(){
     var bump = (grunt.option('bump') || 'patch')
+    grunt.option('level', bump)
     grunt.log.writeln(('Publishing a ' + bump + ' version').yellow)
 
     grunt.task.run([
@@ -241,7 +223,7 @@ module.exports = function(grunt){
       , 'jshint'
       , 'jscs'
       , 'shell:npmTest'
-      , 'bump:' + bump
+      , 'bump'
       , 'shell:gitCommitPackage'
       , 'shell:gitTag'
       , 'shell:gitPush'
