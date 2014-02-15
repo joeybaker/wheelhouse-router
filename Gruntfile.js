@@ -213,7 +213,7 @@ module.exports = function(grunt){
   })
 
   grunt.registerTask('publish', 'create a tag and publish to npm', function(){
-    var bump = (grunt.option('bump') || 'patch')
+    var bump = (grunt.option('bump') || grunt.option('level') || 'patch')
     grunt.option('level', bump)
     grunt.log.writeln(('Publishing a ' + bump + ' version').yellow)
 
