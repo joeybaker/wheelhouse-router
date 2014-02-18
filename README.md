@@ -7,6 +7,25 @@ A wheelhouse package that unifies the [backbone router](http://backbonejs.org/#R
 
 Currently requires [Browserify](https://github.com/substack/node-browserify)
 
+## Why
+
+Get the same HTML from both the server and the client! For google, accessibility, and performance!
+
+When a browser hits a URL, the server uses templates to render out the full page HTML. There's no interactivity at that point, but the page looks identical to how it will after backbone renders. After the browser loads the js, backbone gets the same template files and re-renders the page. (An eventual todo is to prevent the whole page re-render, but for now, it's seems pretty good.)
+
+The tricks involved in this are:
+
+* the server uses handlebars "partial" calls a lot. The client technically sees these partials, but doesn't render them as partials. Instead, those partials are rendered via a sub view.
+* This is a bit fragile because you have to ensure that your partials are good to use both server and client side, but aside from that, pretty good.
+* There is a lot of emphasis on the templates since complex view logic can't be applied server-side. But, since all the complex logic should really just be to deal with user interaction, that _shouldn't_ be much of a problem
+
+### TL;DR
+
+1. it allows the browser to render something very quickly. that's good UX
+2. it's progressive enhancement. I've actually turned off backbone before in IE 8, the page worked fine, all be it with a lot of page reloads.
+3. it's fast for google bot which has started to penalize slow sites. phantom/jsdom solutions are slow.
+4. ~10% of the population has some sort of accessibility problem. JS apps are notoriously bad at accessibility, this helps fix that.
+
 ## Usage
 
 ### Server
